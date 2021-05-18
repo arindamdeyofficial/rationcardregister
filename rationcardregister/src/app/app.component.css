@@ -19,9 +19,8 @@
   h1.example-app-name {
     margin-left: 8px;
   }
-  h1.example-userinfo {
-    margin-left: 8px;
-    
+  .example-spacer {
+    flex: 1 1 auto;
   }
   .avatarpic{
     border-radius: 50%;

@@ -46,12 +46,13 @@ import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
 import {MatFormFieldModule} from '@angular/material/form-field';
 import { HttpClientModule } from '@angular/common/http';
+import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
+import { FlexLayoutModule } from '@angular/flex-layout';
 
 import {NgForm, FormsModule} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CustomerInputComponent } from './customer-input/customer-input.component';
 import { CustomerSearchComponent } from './customer-search/customer-search.component';
 import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
 import { AboutAppComponent } from './about-app/about-app.component';
@@ -66,7 +67,6 @@ import { LandingpageComponent } from './landingpage/landingpage.component';
 @NgModule({
   declarations: [
     AppComponent,
-    CustomerInputComponent,
     CustomerSearchComponent,
     PagenotFoundComponent,
     AboutAppComponent,

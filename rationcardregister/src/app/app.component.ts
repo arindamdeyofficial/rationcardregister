@@ -15,15 +15,13 @@ export class AppComponent {
   mobileQuery: MediaQueryList;
   comingsoonPicPath = "assets//images/comingsoon.png";
   userPic= "assets/img/userPic.png";  
+  username = "Jayanta Ghosh";
 
   private _mobileQueryListener: () => void;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
     , iconRegistry: MatIconRegistry, sanitizer: DomSanitizer) {
-      iconRegistry
-        .addSvgIcon(
-          'input',
-          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/assignment_black_24dp.svg'))  
+      iconRegistry  
         .addSvgIcon(
           'search',
           sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/search_black_24dp.svg')) 
