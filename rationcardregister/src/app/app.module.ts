@@ -56,6 +56,11 @@ import { CustomerSearchComponent } from './customer-search/customer-search.compo
 import { PagenotFoundComponent } from './pagenot-found/pagenot-found.component';
 import { AboutAppComponent } from './about-app/about-app.component';
 import { HelpComponent } from './help/help.component';
+import { AdminpanelComponent } from './adminpanel/adminpanel.component';
+import { LogoutComponent } from './logout/logout.component';
+import { UserprofileComponent } from './userprofile/userprofile.component';
+import { NotificationComponent } from './notification/notification.component';
+import { LandingpageComponent } from './landingpage/landingpage.component';
 
 
 @NgModule({
@@ -65,7 +70,12 @@ import { HelpComponent } from './help/help.component';
     CustomerSearchComponent,
     PagenotFoundComponent,
     AboutAppComponent,
-    HelpComponent
+    HelpComponent,
+    AdminpanelComponent,
+    LogoutComponent,
+    UserprofileComponent,
+    NotificationComponent,
+    LandingpageComponent
   ],
   imports: [
     BrowserModule,

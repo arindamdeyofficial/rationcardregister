@@ -19,6 +19,13 @@
   h1.example-app-name {
     margin-left: 8px;
   }
+  h1.example-userinfo {
+    margin-left: 8px;
+    
+  }
+  .avatarpic{
+    border-radius: 50%;
+  }
   
   .example-sidenav-container {
     /* When the sidenav is not fixed, stretch the sidenav container to fill the available space. This

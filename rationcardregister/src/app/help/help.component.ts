@@ -6,7 +6,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./help.component.css']
 })
 export class HelpComponent implements OnInit {
-  comingsoonPicPath = "assets//images/comingsoon.png";
+  comingsoonPicPath = "assets/img/comingsoon.png";
   constructor() { }
 
   ngOnInit(): void {

@@ -14,6 +14,8 @@ export class AppComponent {
   title = 'rationcardregister';
   mobileQuery: MediaQueryList;
   comingsoonPicPath = "assets//images/comingsoon.png";
+  userPic= "assets/img/userPic.png";  
+
   private _mobileQueryListener: () => void;
 
   constructor(changeDetectorRef: ChangeDetectorRef, media: MediaMatcher
@@ -27,7 +29,25 @@ export class AppComponent {
           sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/search_black_24dp.svg')) 
         .addSvgIcon(
           'help',
-          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/help_black_24dp.svg'))       
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/help_black_24dp.svg'))  
+        .addSvgIcon(
+          'admin',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/admin_panel_settings_black_24dp.svg'))
+        .addSvgIcon(
+          'login',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/login_black_24dp.svg'))
+        .addSvgIcon(
+          'logout',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/logout_black_24dp.svg'))  
+        .addSvgIcon(
+          'verifieduser',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/verified_user_black_24dp.svg'))
+        .addSvgIcon(
+          'print',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/print_black_24dp.svg')) 
+        .addSvgIcon(
+          'profile',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/account_box_black_24dp.svg'))    
             ;
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();

@@ -1,7 +1,22 @@
 <div class="example-container" [class.example-is-mobile]="mobileQuery.matches">
   <mat-toolbar color="primary" class="example-toolbar">
     <button mat-icon-button (click)="snav.toggle()"><mat-icon>menu</mat-icon></button>
-    <h1 class="example-app-name">Arindam Dey</h1>
+    <h1 class="example-app-name">Rationcard Register</h1>
+    <div>
+      <button mat-button [matMenuTriggerFor]="profilemenu"><h1 class="example-userinfo">
+        <img class="avatarpic" [src]="userPic" width="50px" height="50px" />
+        UserName</h1></button>
+      <mat-menu #profilemenu="matMenu">
+        <button mat-menu-item routerLink="/profile" routerLinkActive="active" ><mat-icon svgIcon="profile"></mat-icon>Profile</button>
+        <button mat-menu-item routerLink="/notification" routerLinkActive="active" >
+          <button mat-raised-button color="primary"
+              matBadge="" matBadgePosition="before" matBadgeColor="accent">
+            Notification
+          </button>
+        </button>
+        <button mat-menu-item routerLink="/logout" routerLinkActive="active" ><mat-icon svgIcon="logout"></mat-icon>Logout</button>
+      </mat-menu>      
+    </div>    
   </mat-toolbar>
   
   <mat-sidenav-container class="example-sidenav-container" (backdropClick)="snav.close()"
@@ -20,7 +35,10 @@
             CustomerSearch</button>
             <button mat-menu-item routerLink="/help" routerLinkActive="active" >
               <mat-icon svgIcon="help"></mat-icon>
-              CustomerSearch</button>
+              Help</button>
+            <button mat-menu-item routerLink="/admin" routerLinkActive="active" >
+              <mat-icon svgIcon="admin"></mat-icon>
+              Admin</button>
             <mat-menu #menu="matMenu"></mat-menu>
           </mat-nav-list>
         </mat-sidenav>
