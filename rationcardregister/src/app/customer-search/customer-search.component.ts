@@ -4,13 +4,13 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { FlexLayoutModule } from '@angular/flex-layout';
-import {MatFormFieldModule} from '@angular/material/form-field';
+import { IFetchCustomerData, FetchCustomerData, customer } from '../FetchCustomerData';
 
 @Component({
   selector: 'app-customer-search',
   templateUrl: './customer-search.component.html',
   styleUrls: ['./customer-search.component.css'],
+  providers: [ FetchCustomerData ],
   animations: [
     trigger('detailExpand', [
       state('collapsed', style({ height: '0px', minHeight: '0' })),
@@ -33,13 +33,20 @@ export class CustomerSearchComponent implements OnInit {
   "Mobile_No"
   ];
   displayedColumns: string[] = [...this.calColumns, 'Action'];  
-
+  customers: Array<customer>;
+  error: any;
   constructor(
-    private cd: ChangeDetectorRef
+    private cd: ChangeDetectorRef,
+    private fetchCustomerDataService: IFetchCustomerData
   ) { }
 
   ngOnInit() {    
-    this.dataSource = new MatTableDataSource(customers); 
+    this.fetchCustomerDataService.FetchAllCustomers()
+      .subscribe(
+        (data: Array<customer>) => this.customers = { ...data }, // success path
+        error => this.error = error // error path
+      );
+    this.dataSource = new MatTableDataSource(this.customers); 
   }
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
@@ -52,47 +59,8 @@ export class CustomerSearchComponent implements OnInit {
     this.expandedElement = this.expandedElement === element ? null : element;
     this.cd.detectChanges();
   }
-}
-export interface customer {
-  Name: string;
-  Age: number;
-  Address: string;
-  Adhar_No: number;
-  Relation_With_Hof: string;
-  Mobile_No: number;
-}
-
-const customers: customer[] = [
-  {
-    "Name": "MINATI GHOSE",
-    "Age": 57,
-    "Address": "PRAGATI PALLI, RAJPUR SONARPUR,24(s)-700147",
-    "Adhar_No": 56464564,
-    "Relation_With_Hof": "Self",
-    "Mobile_No": 7278481425
-  },
-  {
-    "Name": "ABHIJT GHOSE",
-    "Age": 24,
-    "Address": "PRAGATI PALLI, RAJPUR SONARPUR,24(s)-700147",
-    "Adhar_No": 333956000000,
-    "Relation_With_Hof": "Son",
-    "Mobile_No": 7278481425
-  },
-  {
-    "Name": "RAMENDRA BHHATTACHRYA",
-    "Age": 70,
-    "Address": "MN BASU ROAD, WARD NO-2, SONARPUR,S24 PGS",
-    "Adhar_No": 268838000000,
-    "Relation_With_Hof": "Self",
-    "Mobile_No": 8582852728
-  },
-  {
-    "Name": "KAISAR ALAM",
-    "Age": 28,
-    "Address": "GANIMA ROAD, NEAR SALEHA MASJID MALLICKPUR HABIB CHAWK, MALLIKPORE RSM WARD NO-21",
-    "Adhar_No": 425522000000,
-    "Relation_With_Hof": "Self",
-    "Mobile_No": 7044188543
+  clear() {
+    this.customers = undefined;
+    this.error = undefined;
   }
-];
+}
