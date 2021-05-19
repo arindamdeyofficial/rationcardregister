@@ -5,6 +5,7 @@ import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { FlexLayoutModule } from '@angular/flex-layout';
+import {MatFormFieldModule} from '@angular/material/form-field';
 
 @Component({
   selector: 'app-customer-search',
@@ -19,115 +20,79 @@ import { FlexLayoutModule } from '@angular/flex-layout';
   ],
 })
 export class CustomerSearchComponent implements OnInit {
-  @ViewChild('outerSort', { static: true }) sort: MatSort;
+  @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  @ViewChildren('innerSort') innerSort: QueryList<MatSort>;
-  @ViewChildren('innerTables') innerTables: QueryList<MatTable<Address>>;
+  dataSource: MatTableDataSource<customer>;
+  expandedElement: customer | null;
+  calColumns: string[] = [
+  "Name",
+  "Age",
+  "Address",
+  "Adhar_No",
+  "Relation_With_Hof",
+  "Mobile_No"
+  ];
+  displayedColumns: string[] = [...this.calColumns, 'Action'];  
 
-  dataSource: MatTableDataSource<User>;
-  usersData: User[] = [];
-  columnsToDisplay = ['name', 'email', 'phone', 'Delete'];
-  innerDisplayedColumns = ['street', 'zipCode', 'city'];
-  expandedElement: User | null;
+  constructor(
+    private cd: ChangeDetectorRef
+  ) { }
 
-  constructor(private cd: ChangeDetectorRef) { }
-
-  ngOnInit() {
-    this.getTableData();
-    USERS.forEach(user => {
-      if (user.addresses && Array.isArray(user.addresses) && user.addresses.length) {
-        this.usersData = [...this.usersData, {...user, addresses: new MatTableDataSource(user.addresses)}];
-      } else {
-        this.usersData = [...this.usersData, user];
-      }
-    });
-    this.dataSource = new MatTableDataSource(this.usersData);
+  ngOnInit() {    
+    this.dataSource = new MatTableDataSource(customers); 
+  }
+  public doFilter = (value: string) => {
+    this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort;
     this.dataSource.paginator = this.paginator;
   }
-  public doFilter = (value: string) => {
-    this.dataSource.filter = value.trim().toLocaleLowerCase();
-  }
-  public getTableData = () => {
-    // this.repoService.getData('api/owner')
-    // .subscribe(res => {
-    //   this.dataSource.data = res as Owner[];
-    // })
-  }
-  public redirectToDelete = (id: string) => {
-    
-  }
-  toggleRow(element: User) {
-    element.addresses && (element.addresses as MatTableDataSource<Address>).data.length ? (this.expandedElement = this.expandedElement === element ? null : element) : null;
+  toggleRow(element: customer) {
+    this.expandedElement = this.expandedElement === element ? null : element;
     this.cd.detectChanges();
-    this.innerTables.forEach((table, index) => (table.dataSource as MatTableDataSource<Address>).sort = this.innerSort.toArray()[index]);
   }
-
-  applyFilter(filterValue: string) {
-    this.innerTables.forEach((table, index) => (table.dataSource as MatTableDataSource<Address>).filter = filterValue.trim().toLowerCase());
-  }
-
 }
-export interface User {
-  name: string;
-  email: string;
-  phone: string;
-  addresses?: Address[] | MatTableDataSource<Address>;
+export interface customer {
+  Name: string;
+  Age: number;
+  Address: string;
+  Adhar_No: number;
+  Relation_With_Hof: string;
+  Mobile_No: number;
 }
 
-export interface Address {
-  street: string;
-  zipCode: string;
-  city: string;
-}
-
-export interface UserDataSource {
-  name: string;
-  email: string;
-  phone: string;
-  addresses?: MatTableDataSource<Address>;
-}
-
-const USERS: User[] = [
+const customers: customer[] = [
   {
-    name: "Mason",
-    email: "mason@test.com",
-    phone: "9864785214",
-    addresses: [
-      {
-        street: "Street 1",
-        zipCode: "78542",
-        city: "Kansas"
-      },
-      {
-        street: "Street 2",
-        zipCode: "78554",
-        city: "Texas"
-      }
-    ]
+    "Name": "MINATI GHOSE",
+    "Age": 57,
+    "Address": "PRAGATI PALLI, RAJPUR SONARPUR,24(s)-700147",
+    "Adhar_No": 56464564,
+    "Relation_With_Hof": "Self",
+    "Mobile_No": 7278481425
   },
   {
-    name: "Eugene",
-    email: "eugene@test.com",
-    phone: "8786541234",
+    "Name": "ABHIJT GHOSE",
+    "Age": 24,
+    "Address": "PRAGATI PALLI, RAJPUR SONARPUR,24(s)-700147",
+    "Adhar_No": 333956000000,
+    "Relation_With_Hof": "Son",
+    "Mobile_No": 7278481425
   },
   {
-    name: "Jason",
-    email: "jason@test.com",
-    phone: "7856452187",
-    addresses: [
-      {
-        street: "Street 5",
-        zipCode: "23547",
-        city: "Utah"
-      },
-      {
-        street: "Street 5",
-        zipCode: "23547",
-        city: "Ohio"
-      }
-    ]
+    "Name": "RAMENDRA BHHATTACHRYA",
+    "Age": 70,
+    "Address": "MN BASU ROAD, WARD NO-2, SONARPUR,S24 PGS",
+    "Adhar_No": 268838000000,
+    "Relation_With_Hof": "Self",
+    "Mobile_No": 8582852728
+  },
+  {
+    "Name": "KAISAR ALAM",
+    "Age": 28,
+    "Address": "GANIMA ROAD, NEAR SALEHA MASJID MALLICKPUR HABIB CHAWK, MALLIKPORE RSM WARD NO-21",
+    "Adhar_No": 425522000000,
+    "Relation_With_Hof": "Self",
+    "Mobile_No": 7044188543
   }
 ];
