@@ -4,7 +4,7 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
-import { IFetchCustomerData, FetchCustomerData, customer } from '../FetchCustomerData';
+import { FetchCustomerData, customer } from '../FetchCustomerData';
 
 @Component({
   selector: 'app-customer-search',
@@ -37,23 +37,30 @@ export class CustomerSearchComponent implements OnInit {
   error: any;
   constructor(
     private cd: ChangeDetectorRef,
-    private fetchCustomerDataService: IFetchCustomerData
+    private fetchCustomerDataService: FetchCustomerData
   ) { }
 
   ngOnInit() {    
+    this.getAllCostomers();    
+  }
+  getAllCostomers(){
     this.fetchCustomerDataService.FetchAllCustomers()
-      .subscribe(
-        (data: Array<customer>) => this.customers = { ...data }, // success path
-        error => this.error = error // error path
-      );
-    this.dataSource = new MatTableDataSource(this.customers); 
+      .subscribe(        
+        (data: Array<customer>) => {
+        this.customers = data;
+        console.log(this.customers);
+        this.dataSource = new MatTableDataSource(this.customers); 
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
+        }, (err) => {
+          console.log('-----> err', err);
+        });
   }
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort;
-    this.dataSource.paginator = this.paginator;
+    
   }
   toggleRow(element: customer) {
     this.expandedElement = this.expandedElement === element ? null : element;
@@ -63,4 +70,5 @@ export class CustomerSearchComponent implements OnInit {
     this.customers = undefined;
     this.error = undefined;
   }
+  
 }

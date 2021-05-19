@@ -10,15 +10,12 @@ export interface customer {
     Name: string;
     Age: number;
     Address: string;
-    Adhar_No: number;
+    Adhar_No: string;
     Relation_With_Hof: string;
-    Mobile_No: number;
+    Mobile_No: string;
   }
-export interface IFetchCustomerData {
-    FetchAllCustomers(): Observable<Array<customer>>;
-}
 @Injectable()
-export class FetchCustomerData implements IFetchCustomerData {
+export class FetchCustomerData {
     url = 'https://localhost:5001/Customer';
   constructor(private http: HttpClient) { }
   FetchAllCustomers() {
