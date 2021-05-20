@@ -1,6 +1,9 @@
-﻿using BusinessModel;
+﻿using AutoMapper;
+using BusinessModel;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using Repository;
 using Repository.Models;
 using Repository.NewModels;
 using System;
@@ -18,31 +21,128 @@ namespace RationcardRegisterWebApi.Controllers
         private readonly ILogger<CustomerController> _logger;
         private readonly RationCardContext _oldContext;
         private readonly RationcardRegisterContext _newContext;
+        private readonly IUnitOfWork _unitOfWork;
+        private IDbRepository<Repository.NewModels.MstCustomer> _repository { get; set; }
+        private readonly IMapper _mapper;
 
         public CustomerController(ILogger<CustomerController> logger
-            , RationCardContext oldContext, RationcardRegisterContext newContext)
+            , RationCardContext oldContext, RationcardRegisterContext newContext
+            , IUnitOfWork unitOfWork
+            , IMapper mapper)
         {
             _logger = logger;
             _oldContext = oldContext;
             _newContext = newContext;
+            _unitOfWork = unitOfWork;
+            _repository = unitOfWork.GetRepository<Repository.NewModels.MstCustomer>();
+            _mapper = mapper;
+        }
+
+        [HttpGet]
+        [Route("GetMasterData")]
+        public async Task<MasterData> GetMasterData()
+        {
+            var masterData = new MasterData();
+            try
+            {
+                masterData.Customers = FetchAllCustomers()?.Result;
+                masterData.Hofs = masterData.Customers.Where(c => c.IsHof ?? false).Select(c =>
+                    new Hof
+                    {
+                        HofId = c.HofId??0,
+                        HofActiveCard = masterData.Customers
+                                        .Where(cu => cu.HofId.Equals(c.CustomerRowId) 
+                                                && (cu.Active??false)).Count(),
+                        HofCardNumber = c.CardNumber,
+                        HofMobileNumber = c.CardNumber,
+                        HofName = c.Name
+                    }).ToList();
+                masterData.CardCategories = _newContext.MstCats.Select(cat =>
+                    new CardCategory
+                    {
+                        CardCategoryId = cat.CatId,
+                        CardCategoryDesc = cat.CatDesc
+                    }).ToList();
+                masterData.Relations = _newContext.MstRels.Select(rel =>
+                    new Relation
+                    {
+                        RelationId = rel.MstRelId,
+                        RelationDesc = rel.Relation
+                    }).ToList();
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return masterData;
         }
 
         [HttpGet]
         [Route("FetchAllCustomers")]
-        public List<Customer> FetchAllCustomers()
+        public async Task<List<Customer>> FetchAllCustomers()
         {
             var customers = new List<Customer>();
-            var dataClass = new OldDataMgmt(_oldContext, _newContext);
-            customers = dataClass.FetchCustomersNew();
+            try
+            {
+                var dataClass = new OldDataMgmt(_oldContext, _newContext);
+                customers = await dataClass.FetchCustomersNew();
+            }
+            catch (Exception ex)
+            {
+
+            }
             return customers;
         }
 
+        [DisableCors]
         [HttpPost]
         [Route("DeleteCustomer")]
-        public bool DeleteCustomer(Customer cust)
+        public async Task<bool> DeleteCustomer(Customer cust)
         {
             bool isSuccess = false;
+            try
+            {
+                _newContext.MstCustomers.Remove(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
 
+            }
+            return isSuccess;
+        }
+
+        [HttpPost]
+        [Route("AddCustomer")]
+        public async Task<bool> AddCustomer(Customer cust)
+        {
+            bool isSuccess = false;
+            try
+            {
+                _newContext.MstCustomers.Add(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+
+            }
+            return isSuccess;
+        }
+
+        [HttpPost]
+        [Route("UpdateCustomer")]
+        public async Task<bool> UpdateCustomer(Customer cust)
+        {
+            bool isSuccess = false;
+            try
+            {
+                _newContext.MstCustomers.Update(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+            }
+            catch (Exception ex)
+            {
+
+            }
             return isSuccess;
         }
     }

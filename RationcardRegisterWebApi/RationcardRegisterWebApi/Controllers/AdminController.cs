@@ -1,4 +1,5 @@
-﻿using BusinessModel;
+﻿using AutoMapper;
+using BusinessModel;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Repository;
@@ -21,16 +22,19 @@ namespace RationcardRegisterWebApi.Controllers
         private readonly RationcardRegisterContext _newContext;
         private readonly IUnitOfWork _unitOfWork;
         private IDbRepository<Repository.NewModels.MstCustomer> _repository { get; set; }
+        private readonly IMapper _mapper;
 
         public AdminController(ILogger<CustomerController> logger
             , RationCardContext oldContext, RationcardRegisterContext newContext
-            , IUnitOfWork unitOfWork)
+            , IUnitOfWork unitOfWork
+            , IMapper mapper)
         {
             _logger = logger;
             _oldContext = oldContext;
             _newContext = newContext;
             _unitOfWork = unitOfWork;
             _repository = unitOfWork.GetRepository<Repository.NewModels.MstCustomer>();
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -40,7 +44,7 @@ namespace RationcardRegisterWebApi.Controllers
             bool isSuccess = false;
             var customers = new List<Repository.NewModels.MstCustomer>();
             var dataClass = new OldDataMgmt(_oldContext, _newContext);
-            customers = dataClass.FetchDataRaw();
+            customers = await dataClass.FetchDataRaw();
             try
             {
                 _repository.InsertRange(customers);

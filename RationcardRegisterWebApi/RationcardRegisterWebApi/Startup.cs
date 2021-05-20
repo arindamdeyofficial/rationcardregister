@@ -35,7 +35,7 @@ namespace RationcardRegisterWebApi
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.WithOrigins("http://localhost:4200");
+                                      builder.AllowAnyOrigin();
                                   });
             });
             services.AddControllers();
@@ -46,6 +46,7 @@ namespace RationcardRegisterWebApi
             services.AddSingleton<RationcardRegisterContext>(new RationcardRegisterContext());
             services.AddSingleton<RationCardContext>(new RationCardContext());
             services.AddSingleton<IUnitOfWork, UnitOfWork>();
+            services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

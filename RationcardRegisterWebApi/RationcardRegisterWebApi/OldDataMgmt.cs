@@ -4,6 +4,7 @@ using Repository.NewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 
 namespace RationcardRegisterWebApi
 {
@@ -16,7 +17,7 @@ namespace RationcardRegisterWebApi
             _oldContext = oldContext;
             _newContext = newContext;
         }
-        public List<Customer> FetchCustomersOld(int noOfCustomers)
+        public async Task<List<Customer>> FetchCustomersOld(int noOfCustomers)
         {
             var allCustDetails = new List<Customer>();
             try
@@ -41,19 +42,20 @@ namespace RationcardRegisterWebApi
                         AdharNo = combinedEntry.cust.AdharNo,
                         Age = combinedEntry.cust.Age ?? 0,
                         CardCategory = cat.CatKey,
+                        CardCategoryId = cat.CatId,
                         Name = combinedEntry.cust.Name,
                         GaurdianName = combinedEntry.cust.GaurdianName,
                         GaurdianRelation = combinedEntry.cust.GaurdianRelation,
-                        Ishof = combinedEntry.cust.HofFlag,
+                        IsHof = combinedEntry.cust.HofFlag,
                         HofId = combinedEntry.cust.HofId,
                         InactivatedDate = combinedEntry.cust.InactivatedDate,
                         MobileNo = combinedEntry.cust.MobileNo,
-                        SerialNumber = combinedEntry.cust.CustomerId,
-                        RationcardNumber = combinedEntry.card.Number,
+                        CustomerSerial = combinedEntry.cust.CustomerId,
+                        CardNumber = combinedEntry.card.Number,
                         RelationWithHof = combinedEntry.cust.RelationWithHof,
-                        CreatedDate = combinedEntry.card.CreatedDate,
-                        CustomerId = combinedEntry.cust.CustomerId,
-                        FamilyId = 0
+                       CreatedDate = combinedEntry.card.CreatedDate,
+                        CustomerRowId = combinedEntry.cust.CustomerId,
+                        FamilyId = 0                     
                     }).ToList();
 
             }
@@ -64,7 +66,7 @@ namespace RationcardRegisterWebApi
             return allCustDetails;
         }
 
-        public List<Customer> FetchCustomersNew()
+        public async Task<List<Customer>> FetchCustomersNew()
         {
             var allCustDetails = new List<Customer>();
             try
@@ -85,16 +87,19 @@ namespace RationcardRegisterWebApi
                                      CardCategory = cat.CatDesc,
                                      Name = cust.Name,
                                      GaurdianName = cust.GaurdianName,
+                                     GaurdianRelId = cust.GaurdianRelId ?? 0,
                                      GaurdianRelation = relGuardian.Relation,
-                                     Ishof = cust.IsHof,
+                                     IsHof = cust.IsHof,
                                      HofId = cust.HofId,
                                      InactivatedDate = cust.InactivatedDate,
                                      MobileNo = cust.MobileNo,
-                                     SerialNumber = cust.CustomerSerial ?? 0,
-                                     RationcardNumber = cust.CardNumber,
+                                     CustomerSerial = cust.CustomerSerial ?? 0,
+                                     CardNumber = cust.CardNumber,
                                      RelationWithHof = relHof.Relation,
+                                     RelationWithHofId = relHof.MstRelId,
+                                     CardCategoryId = cat.CatId,
                                      CreatedDate = cust.CreatedDate,
-                                     CustomerId = cust.CustomerRowId,
+                                     CustomerRowId = cust.CustomerRowId,
                                      FamilyId = 0
                                  }).ToList();
 
@@ -107,7 +112,7 @@ namespace RationcardRegisterWebApi
             return allCustDetails;
         }
 
-        public List<Repository.NewModels.MstCustomer> FetchDataRaw()
+        public async Task<List<Repository.NewModels.MstCustomer>> FetchDataRaw()
         {
             var allCustDetails = new List<Repository.NewModels.MstCustomer>();
             try
@@ -129,14 +134,17 @@ namespace RationcardRegisterWebApi
                 //                on cust.GaurdianRelation equals rel.Relation
                 //                select oldCust.RationCardId).ToList();
 
-                 allCustDetails = (from oldCust in _oldContext.MstCustomers.DefaultIfEmpty()
-                                   join oldCard in _oldContext.TxnRationCards.DefaultIfEmpty()
-                                 on oldCust.CustomerId equals oldCard.CustomerId into customers
-                                   from cust in customers.DefaultIfEmpty()
+                 allCustDetails = (from oldCust in _oldContext.MstCustomers
+                                   join oldCard in _oldContext.TxnRationCards
+                                  on new { custIdEqualType = oldCust.CustomerId, cardIdEqualType = oldCust.RationCardId }
+                                  equals new { custIdEqualType = (oldCard.CustomerId ?? 0), cardIdEqualType = oldCard.RationCardId.ToString() }
+                                  into customers
+                                   from cust in customers
                                    join cat in _oldContext.MstCats
-                                  on cust.CardCategoryId equals cat.CatId
+                                   on cust.CardCategoryId equals cat.CatId
                                    join rel in _oldContext.MstRels
-                                  on oldCust.GaurdianRelation equals rel.Relation
+                                   //on (oldCust.GaurdianRelation ?? string.Empty).Trim().ToLower() equals (rel.Relation ?? string.Empty).Trim().ToLower()
+                                   on oldCust.GaurdianRelation equals rel.Relation
                                    select new Repository.NewModels.MstCustomer
                                    {
                                        Active = oldCust.Active,
@@ -152,7 +160,7 @@ namespace RationcardRegisterWebApi
                                        InactivatedDate = oldCust.InactivatedDate,
                                        MobileNo = oldCust.MobileNo,
                                        CustomerSerial = oldCust.CustomerId,
-                                       CardNumber = "",
+                                       CardNumber = cust.Number,
                                        RelationWithHofId = rel.MstRelWithHofId,
                                        CreatedDate = DateTime.Now,
                                        FamilyId = 0
