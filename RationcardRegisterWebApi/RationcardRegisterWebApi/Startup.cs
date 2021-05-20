@@ -7,6 +7,9 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using Repository;
+using Repository.Models;
+using Repository.NewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -40,6 +43,9 @@ namespace RationcardRegisterWebApi
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "RationcardRegisterWebApi", Version = "v1" });
             });
+            services.AddSingleton<RationcardRegisterContext>(new RationcardRegisterContext());
+            services.AddSingleton<RationCardContext>(new RationCardContext());
+            services.AddSingleton<IUnitOfWork, UnitOfWork>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

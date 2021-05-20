@@ -16,7 +16,7 @@ export interface customer {
   }
 @Injectable()
 export class FetchCustomerData {
-    url = 'https://localhost:5001/Customer';
+    url = 'https://localhost:5001/Customer/FetchAllCustomers';
   constructor(private http: HttpClient) { }
   FetchAllCustomers() {
     return this.http.get<Array<customer>>(this.url)
@@ -40,4 +40,5 @@ export class FetchCustomerData {
     return throwError(
       'Something bad happened; please try again later.');
   }
+  
 }
