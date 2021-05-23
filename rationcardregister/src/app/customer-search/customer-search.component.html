@@ -76,18 +76,22 @@
                         <mat-form-field>
                         <mat-label>AdharNo</mat-label>
                         <input matInput placeholder="Ex. 1232 4587 9654" value="{{element.AdharNo}}" name="AdharNo">
-                        </mat-form-field>
+                        </mat-form-field>                       
                         <mat-form-field>
-                        <mat-label>MobileNo</mat-label>
-                        <input matInput placeholder="Ex. 9864758477" value="{{element.MobileNo}}" name="MobileNo">
+                          <mat-label>MobileNo</mat-label>
+                          <input matInput placeholder="Ex. 9864758477"  name="MobileNo"
+                          [(ngModel)]="element.MobileNo" [formControl]="phNo" required>
+                          <mat-error *ngIf="phNo.invalid">{{getPhErrMsg()}}</mat-error>
                         </mat-form-field> 
                       </mat-card>
                       </div>
                       <div class="col-md-3 col-xs-3 col-lg-3">
                       <mat-card>
                         <mat-form-field>
-                        <mat-label>Age</mat-label>
-                        <input matInput placeholder="Automatic From BackEnd" value="{{element.Age}}" name="Age">
+                          <mat-label>Age</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" value="{{element.Age}}" name="Age"
+                          [(ngModel)]="element.Age" [formControl]="agev" required>
+                          <mat-error *ngIf="agev.invalid">{{getAgeErrMsg()}}</mat-error>
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                         <mat-label>Address</mat-label>
@@ -110,17 +114,21 @@
                       <div class="col-md-3 col-xs-3 col-lg-3">
                       <mat-card>
                         <mat-form-field appearance="fill">
-                        <mat-label>CreatedDate</mat-label>
-                        <input matInput [(ngModel)]="element.CreatedDate" name="CreatedDate"[matDatepicker]="pickerCreatedDate">
-                        <mat-datepicker-toggle matSuffix [for]="pickerCreatedDate"></mat-datepicker-toggle>
-                        <mat-datepicker #pickerCreatedDate></mat-datepicker>
+                          <mat-label>CreatedDate</mat-label>
+                          <input matInput [(ngModel)]="element.CreatedDate" name="CreatedDate"[matDatepicker]="pickerCreatedDate"
+                          [(ngModel)]="element.CreatedDate" [formControl]="dt" required>
+                          <mat-datepicker-toggle matSuffix [for]="pickerCreatedDate"></mat-datepicker-toggle>
+                          <mat-datepicker #pickerCreatedDate></mat-datepicker>
+                          <mat-error *ngIf="dt.invalid">{{getDtErrMsg()}}</mat-error>
                         </mat-form-field>
                         <mat-slide-toggle [checked]="element.Active" name="Active" color="primary" [(ngModel)]="element.Active">Active</mat-slide-toggle>
                         <mat-form-field appearance="fill" [hidden]="element.Active">
                           <mat-label>InactivatedDate</mat-label>
-                          <input matInput [(ngModel)]="element.InactivatedDate" name="InactivatedDate" matInput [matDatepicker]="pickerInactivatedDate">
+                          <input matInput [(ngModel)]="element.InactivatedDate" name="InactivatedDate" matInput [matDatepicker]="pickerInactivatedDate"
+                          [(ngModel)]="element.InactivatedDate" [formControl]="dt" required>
                           <mat-datepicker-toggle matSuffix [for]="pickerInactivatedDate"></mat-datepicker-toggle>
                           <mat-datepicker #pickerInactivatedDate></mat-datepicker>
+                          <mat-error *ngIf="dt.invalid">{{getDtErrMsg()}}</mat-error>
                         </mat-form-field>
                       </mat-card>
                       </div>

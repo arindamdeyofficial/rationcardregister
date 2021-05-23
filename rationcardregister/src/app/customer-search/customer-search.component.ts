@@ -1,5 +1,4 @@
 // https://code-maze.com/angular-material-table/
-import { Component, ViewChild, ViewChildren, QueryList, ChangeDetectorRef, OnInit } from '@angular/core';
 import { animate, state, style, transition, trigger } from '@angular/animations';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource, MatTable } from '@angular/material/table';
@@ -10,6 +9,31 @@ import { Customer } from '../api/Customer';
 import { CardCategory } from '../api/CardCategory';
 import { Relation } from '../api/Relation';
 import { Hof } from '../api/Hof';
+import {FocusMonitor} from '@angular/cdk/a11y';
+import {BooleanInput, coerceBooleanProperty} from '@angular/cdk/coercion';
+import {
+  Component,
+  ElementRef,
+  Inject,
+  Input,
+  OnDestroy,
+  Optional,
+  Self,
+  ViewChild, ViewChildren, QueryList, ChangeDetectorRef, OnInit 
+} from '@angular/core';
+import {
+  AbstractControl,
+  ControlValueAccessor,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  NgControl,
+  Validators,
+  FormsModule, 
+  ReactiveFormsModule
+} from '@angular/forms';
+import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/material/form-field';
+import {Subject} from 'rxjs';
 
 @Component({
   selector: 'app-customer-search',
@@ -27,6 +51,38 @@ import { Hof } from '../api/Hof';
 export class CustomerSearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+  phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.maxLength(10)]);
+  dt = new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/), Validators.maxLength(10)]);
+  agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.maxLength(3)]);
+
+  getPhErrMsg() {
+    if (this.phNo.hasError('required')) {
+      return 'You must enter a value';
+    }
+    if (this.phNo.hasError('maxLength')) {
+      return 'only mobile number of 10 digit';
+    }
+    return this.phNo.hasError('pattern') ? 'Not a valid Phone Number' : '';
+  }
+  getDtErrMsg() {
+    if (this.dt.hasError('required')) {
+      return 'You must enter a value';
+    }
+    if (this.dt.hasError('maxLength')) {
+      return 'Only Date not time';
+    }
+    return this.dt.hasError('pattern') ? 'Not a valid date' : '';
+  }
+  getAgeErrMsg() {
+    if (this.agev.hasError('required')) {
+      return 'You must enter a value';
+    }
+    if (this.agev.hasError('maxLength')) {
+      return 'Age please';
+    }
+    return this.agev.hasError('pattern') ? 'Not a valid Age' : '';
+  }
+
   dataSource: MatTableDataSource<Customer>;
   expandedElement: Customer | null;
   calColumns: string[] = [
