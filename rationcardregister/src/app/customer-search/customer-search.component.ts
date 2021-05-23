@@ -51,16 +51,13 @@ import {Subject} from 'rxjs';
 export class CustomerSearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
-  phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.maxLength(10)]);
-  dt = new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|[12][0-9]|3[01])[- /.](0[1-9]|1[012])[- /.](19|20)\d\d$/), Validators.maxLength(10)]);
-  agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]+$/), Validators.maxLength(3)]);
+  phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+  dt = new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/)]);
+  agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{1,3}$/)]);
 
   getPhErrMsg() {
     if (this.phNo.hasError('required')) {
       return 'You must enter a value';
-    }
-    if (this.phNo.hasError('maxLength')) {
-      return 'only mobile number of 10 digit';
     }
     return this.phNo.hasError('pattern') ? 'Not a valid Phone Number' : '';
   }
@@ -68,17 +65,11 @@ export class CustomerSearchComponent implements OnInit {
     if (this.dt.hasError('required')) {
       return 'You must enter a value';
     }
-    if (this.dt.hasError('maxLength')) {
-      return 'Only Date not time';
-    }
     return this.dt.hasError('pattern') ? 'Not a valid date' : '';
   }
   getAgeErrMsg() {
     if (this.agev.hasError('required')) {
       return 'You must enter a value';
-    }
-    if (this.agev.hasError('maxLength')) {
-      return 'Age please';
     }
     return this.agev.hasError('pattern') ? 'Not a valid Age' : '';
   }
