@@ -115,17 +115,16 @@
                       <mat-card>
                         <mat-form-field appearance="fill">
                           <mat-label>CreatedDate</mat-label>
-                          <input matInput [(ngModel)]="element.CreatedDate" name="CreatedDate"[matDatepicker]="pickerCreatedDate"
-                          [(ngModel)]="element.CreatedDate" [formControl]="dt" required>
+                          <input matInput [matDatepicker]="pickerCreatedDate"
+                          value="{{element.CreatedDate}}">
                           <mat-datepicker-toggle matSuffix [for]="pickerCreatedDate"></mat-datepicker-toggle>
                           <mat-datepicker #pickerCreatedDate></mat-datepicker>
-                          <mat-error *ngIf="dt.invalid">{{getDtErrMsg()}}</mat-error>
                         </mat-form-field>
                         <mat-slide-toggle [checked]="element.Active" name="Active" color="primary" [(ngModel)]="element.Active">Active</mat-slide-toggle>
                         <mat-form-field appearance="fill" [hidden]="element.Active">
                           <mat-label>InactivatedDate</mat-label>
-                          <input matInput [(ngModel)]="element.InactivatedDate" name="InactivatedDate" matInput [matDatepicker]="pickerInactivatedDate"
-                          [(ngModel)]="element.InactivatedDate" [formControl]="dt" required>
+                          <input matInput name="InactivatedDate" matInput [matDatepicker]="pickerInactivatedDate"
+                          value="{{element.InactivatedDate}}" [formControl]="dt" required>
                           <mat-datepicker-toggle matSuffix [for]="pickerInactivatedDate"></mat-datepicker-toggle>
                           <mat-datepicker #pickerInactivatedDate></mat-datepicker>
                           <mat-error *ngIf="dt.invalid">{{getDtErrMsg()}}</mat-error>

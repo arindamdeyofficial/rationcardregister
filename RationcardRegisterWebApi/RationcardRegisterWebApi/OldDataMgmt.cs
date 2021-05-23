@@ -103,7 +103,7 @@ namespace RationcardRegisterWebApi
                                     MobileNo = oldCust.MobileNo,
                                     CardNumber = cust.Number,
                                     RelationWithHofId = _oldContext.MstRels.Where(r => r.Relation.Equals(oldCust.RelationWithHof)).Select(r => r.MstRelWithHofId).FirstOrDefault(),
-                                    CreatedDate = DateTime.Now,
+                                    CreatedDate = oldCust.CreatedDate,
                                     FamilyId = 0,                                    
                                     GaurdianRelation = oldCust.GaurdianRelation,                                    
                                     RelationWithHof = oldCust.RelationWithHof,

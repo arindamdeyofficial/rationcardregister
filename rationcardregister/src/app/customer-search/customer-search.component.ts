@@ -52,7 +52,7 @@ export class CustomerSearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
   phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
-  dt = new FormControl('', [Validators.required, Validators.pattern(/^(0[1-9]|1[012])[- /.](0[1-9]|[12][0-9]|3[01])[- /.](19|20)\d\d$/)]);
+  dt = new FormControl('', [Validators.required, Validators.pattern(/^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/)]);
   agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{1,3}$/)]);
 
   getPhErrMsg() {
