@@ -36,7 +36,7 @@ export class CustomerSearchComponent implements OnInit {
   "MobileNo",  
   "HofName"
   ];
-  displayedColumns: string[] = [...this.calColumns,
+  displayedColumns: string[] = ["Details", ...this.calColumns,
   "IsHof",
   "Active",
   'Action'];  
