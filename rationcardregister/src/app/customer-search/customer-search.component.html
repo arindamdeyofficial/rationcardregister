@@ -1,11 +1,19 @@
 <br>
-<div class="row">     
+<div class="row">
+  <mat-progress-bar mode="query" [hidden]="customers != undefined"></mat-progress-bar>
+</div>
+<div class="row" [hidden]="customers == undefined">    
+  <div class="row">
       <div class="col-md-12 col-xs-12 col-lg-12">
+        <div class="col-md-4 col-xs-4 col-lg-4"></div>
         <div fxLayout fxLayoutAlign="center center">
-          <mat-form-field fxFlex="40%">
+          <mat-form-field fxFlex="100%">
             <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
           </mat-form-field>
-        </div>        
+        </div>   
+        <div class="col-md-4 col-xs-4 col-lg-4"></div>  
+      </div> 
+      <div class="row">  
         <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
           <ng-container matColumnDef="Details">
             <th mat-header-cell *matHeaderCellDef mat-sort-header></th>
@@ -22,13 +30,13 @@
           <ng-container matColumnDef="IsHof">
             <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Hof</th>
             <td mat-cell *matCellDef="let element">
-              <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="accent" disabled></mat-slide-toggle>  
+              <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" disabled></mat-slide-toggle>  
             </td>
           </ng-container>
             <ng-container matColumnDef="Active">
               <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
               <td mat-cell *matCellDef="let element">
-                <mat-slide-toggle [checked]="element.Active" name="Active" color="accent" disabled></mat-slide-toggle>  
+                <mat-slide-toggle [checked]="element.Active" name="Active" color="primary" disabled></mat-slide-toggle>  
               </td>
           </ng-container>
           <ng-container matColumnDef="Action">
@@ -48,31 +56,31 @@
                     <div class="row">     
                       <div class="col-md-3 col-xs-3 col-lg-3">
                       <mat-card>
-                        <mat-form-field>
-                        <mat-label>Name</mat-label>
-                        <input matInput placeholder="Automatic From BackEnd" value="{{element.Name}}" name="Name">
-                        </mat-form-field>
-                        <mat-form-field appearance="fill">
-                        <mat-label>CardCategory</mat-label>
-                        <input matInput [(ngModel)]="element.CardCategory" name="CardCategory">
-                        </mat-form-field>
-                        <mat-form-field>
-                        <mat-label>CardNumber</mat-label>
-                        <input matInput placeholder="Automatic From BackEnd" value="{{element.CardNumber}}" name="CardNumber">
-                        </mat-form-field>
-                        <mat-form-field>
-                        <mat-label>AdharNo</mat-label>
-                        <input matInput placeholder="Automatic From BackEnd" value="{{element.AdharNo}}" name="AdharNo">
-                        </mat-form-field>
-                        <mat-form-field>
-                        <mat-label>MobileNo</mat-label>
-                        <input matInput placeholder="Automatic From BackEnd" value="{{element.MobileNo}}" name="MobileNo">
-                        </mat-form-field> 
                         <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>             
                         <mat-form-field [hidden]="element.IsHof">
                           <mat-label>HofName</mat-label>
-                          <input matInput placeholder="Automatic From BackEnd" value="{{element.HofName}}" name="HofName">
+                          <input matInput placeholder="Ex. Head Of the family Name" value="{{element.HofName}}" name="HofName">
                         </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Ex. Customer Name" value="{{element.Name}}" name="Name">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                        <mat-label>CardCategory</mat-label>
+                        <input matInput [(ngModel)]="element.CardCategory" name="CardCategory" placeholder="Ex. SPHH" >
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>CardNumber</mat-label>
+                        <input matInput placeholder="Ex. SPHH-0051003419" value="{{element.CardNumber}}" name="CardNumber">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>AdharNo</mat-label>
+                        <input matInput placeholder="Ex. 1232 4587 9654" value="{{element.AdharNo}}" name="AdharNo">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>MobileNo</mat-label>
+                        <input matInput placeholder="Ex. 9864758477" value="{{element.MobileNo}}" name="MobileNo">
+                        </mat-form-field> 
                       </mat-card>
                       </div>
                       <div class="col-md-3 col-xs-3 col-lg-3">
@@ -168,4 +176,5 @@
         <mat-paginator [pageSize]="10" [pageSizeOptions]="[2, 4, 6, 10, 20, 40, 60, 100]">
         </mat-paginator>
     </div>
+  </div>
 </div>

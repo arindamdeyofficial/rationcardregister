@@ -37,6 +37,7 @@ namespace RationcardRegisterWebApi
                 allCustDetails = (from cust in _newContext.MstCustomers.DefaultIfEmpty()
                                  join cat in _newContext.MstCats
                                  on cust.CardCategoryId equals cat.CatId
+                                 orderby cust.FamilyId ascending
                                  select new Customer
                                  {
                                      Active = cust.Active,

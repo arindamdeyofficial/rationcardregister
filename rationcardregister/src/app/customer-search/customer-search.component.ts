@@ -102,9 +102,6 @@ export class CustomerSearchComponent implements OnInit {
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
-  ngAfterViewInit(): void {
-    
-  }
   toggleRow(element: Customer) {
     this.expandedElement = this.expandedElement === element ? null : element;
     this.cd.detectChanges();
