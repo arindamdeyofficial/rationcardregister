@@ -3,7 +3,7 @@
 import { Observable, throwError } from 'rxjs';
 import { catchError, retry } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpErrorResponse, HttpResponse, HttpClientModule, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpErrorResponse, HttpResponse, HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
 import { MasterData } from './MasterData';
 import { Customer } from './Customer';
 
@@ -13,6 +13,7 @@ export class FetchCustomerData {
     httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
+        //,'Access-Control-Allow-Origin': '*'
         //, Authorization: 'my-auth-token'
       })
     };

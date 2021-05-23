@@ -63,6 +63,7 @@ import { LogoutComponent } from './logout/logout.component';
 import { UserprofileComponent } from './userprofile/userprofile.component';
 import { NotificationComponent } from './notification/notification.component';
 import { LandingpageComponent } from './landingpage/landingpage.component';
+import { DialogComponent } from './dialog/dialog.component';
 
 
 @NgModule({
@@ -76,7 +77,8 @@ import { LandingpageComponent } from './landingpage/landingpage.component';
     LogoutComponent,
     UserprofileComponent,
     NotificationComponent,
-    LandingpageComponent
+    LandingpageComponent,
+    DialogComponent
   ],
   imports: [
     BrowserModule,

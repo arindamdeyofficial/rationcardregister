@@ -60,5 +60,5 @@ export class AppComponent {
     }
     onOpenMenu(menu: any): void {
       console.log(menu);
-    }
+    }    
 }

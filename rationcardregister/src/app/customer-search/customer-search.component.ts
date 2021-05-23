@@ -34,6 +34,9 @@ import {
 } from '@angular/forms';
 import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/material/form-field';
 import {Subject} from 'rxjs';
+import { books } from 'googleapis/build/src/apis/books';
+import {MatDialog, MatDialogModule} from '@angular/material/dialog';
+import { DialogComponent } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-customer-search',
@@ -77,6 +80,8 @@ export class CustomerSearchComponent implements OnInit {
   dataSource: MatTableDataSource<Customer>;
   expandedElement: Customer | null;
   calColumns: string[] = [
+  "FamilyId",
+  "CustomerSerial",
   "Name",
   "CardNumber",
   "AdharNo",
@@ -94,12 +99,20 @@ export class CustomerSearchComponent implements OnInit {
   error: any;
   constructor(
     private cd: ChangeDetectorRef,
-    private fetchCustomerDataService: FetchCustomerData
+    private fetchCustomerDataService: FetchCustomerData,
+    public dialog: MatDialog
   ) { }
   
 
   ngOnInit() {    
     this.getAllCustomers();    
+  }
+  openDialog(cust: Customer) {
+    const dialogRef = this.dialog.open(DialogComponent);
+
+    dialogRef.afterClosed().subscribe(result => {
+      console.log(`Dialog result: ${result}`);
+    });
   }
   getAllCustomers(){
     this.fetchCustomerDataService.GetMasterData()
@@ -119,13 +132,41 @@ export class CustomerSearchComponent implements OnInit {
   }
 
   deleteCustomer(cust: Customer){
-    this.fetchCustomerDataService.DeleteCustomer(cust)
+    let todelete: Boolean;
+    if(cust.IsHof){
+      var noOfFamilyMembers = this.customers.filter(a => a.FamilyId == cust.FamilyId);
+      console.log(cust.CardNumber + ' : ' + cust.Name + ' : HOF : noOfFamilyMembers: ' + noOfFamilyMembers.length);
+      if(noOfFamilyMembers.length > 1){
+        todelete = false;
+      }
+      else{
+        todelete = true;
+      }      
+    } else
+    {
+      todelete = true;
+    }
+    if(todelete){
+      console.log(cust.CardNumber + ' : ' + cust.Name + ' : delete started ');
+      this.fetchCustomerDataService.DeleteCustomer(cust)
       .subscribe(        
         (data: boolean) => {
-        console.log(data);
+          console.log(cust.CardNumber + ' : ' + cust.Name + ' : delete successful');
+          var custIndex = this.customers.findIndex(a => a == cust);
+          if (custIndex > -1) {
+            this.customers.splice(custIndex, 1);
+          }
+        //this.dataSource.data.splice(custIndex, 1);
+        this.dataSource = new MatTableDataSource(this.customers); 
+        this.dataSource.sort = this.sort;
+        this.dataSource.paginator = this.paginator;
         }, (err) => {
           console.log('-----> err', err);
         });
+    }      
+    else{
+      alert('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.');
+    }
   }
   addCustomer(cust: Customer){
     this.fetchCustomerDataService.AddCustomer(cust)
@@ -158,4 +199,8 @@ export class CustomerSearchComponent implements OnInit {
     this.error = undefined;
   }
   
+}
+
+function DialogContentExampleDialog(DialogContentExampleDialog: any) {
+  throw new Error('Function not implemented.');
 }
