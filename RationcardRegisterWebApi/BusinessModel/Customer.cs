@@ -9,11 +9,11 @@ namespace BusinessModel
     public class Customer: ICustomer
     {
         [JsonPropertyName("CustomerSerial")]
-        public int CustomerSerial { get; set; }
+        public int? CustomerSerial { get; set; }
         [JsonPropertyName("CustomerRowId")]
         public int CustomerRowId { get; set; }
         [JsonPropertyName("FamilyId")]
-        public int FamilyId { get; set; }
+        public int? FamilyId { get; set; }
         [JsonPropertyName("Name")]
         public string Name { get; set; }
         [JsonPropertyName("Age")]
@@ -25,7 +25,7 @@ namespace BusinessModel
         [JsonPropertyName("RelationWithHof")]
         public string RelationWithHof { get; set; }
         [JsonPropertyName("RelationWithHofId")]
-        public int RelationWithHofId { get; set; }
+        public int? RelationWithHofId { get; set; }
         [JsonPropertyName("MobileNo")]
         public string MobileNo { get; set; }
         [JsonPropertyName("CardNumber")]
@@ -34,12 +34,14 @@ namespace BusinessModel
         public bool? IsHof { get; set; }
         [JsonPropertyName("HofId")]
         public int? HofId { get; set; }
+        [JsonPropertyName("HofName")]
+        public string HofName { get; set; }
         [JsonPropertyName("GaurdianName")]
         public string GaurdianName { get; set; }
         [JsonPropertyName("GaurdianRelation")]
         public string GaurdianRelation { get; set; }
         [JsonPropertyName("GaurdianRelId")]
-        public int GaurdianRelId { get; set; }
+        public int? GaurdianRelId { get; set; }
         [JsonPropertyName("Active")]
         public bool? Active { get; set; }
         [JsonPropertyName("CardCategory")]

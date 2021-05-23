@@ -84,7 +84,7 @@ namespace RationcardRegisterWebApi.Controllers
             var customers = new List<Customer>();
             try
             {
-                var dataClass = new OldDataMgmt(_oldContext, _newContext);
+                var dataClass = new OldDataMgmt(_oldContext, _newContext, _unitOfWork, _mapper);
                 customers = await dataClass.FetchCustomersNew();
             }
             catch (Exception ex)

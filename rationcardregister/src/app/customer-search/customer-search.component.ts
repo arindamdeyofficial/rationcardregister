@@ -33,12 +33,13 @@ export class CustomerSearchComponent implements OnInit {
   "Name",
   "CardNumber",
   "AdharNo",
-  "MobileNo",
-  "IsHof",
-  "HofId",
-  "Active"
+  "MobileNo",  
+  "HofName"
   ];
-  displayedColumns: string[] = [...this.calColumns, 'Action'];  
+  displayedColumns: string[] = [...this.calColumns,
+  "IsHof",
+  "Active",
+  'Action'];  
   customers: Array<Customer>;
   hofs: Array<Hof>;
   cardCats: Array<CardCategory>;
@@ -48,6 +49,7 @@ export class CustomerSearchComponent implements OnInit {
     private cd: ChangeDetectorRef,
     private fetchCustomerDataService: FetchCustomerData
   ) { }
+  
 
   ngOnInit() {    
     this.getAllCustomers();    

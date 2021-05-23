@@ -1,56 +1,159 @@
-
-<div fxLayout fxLayoutAlign="center center">
-  <mat-form-field fxFlex="40%">
-    <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
-  </mat-form-field>
+<br>
+<div class="row">     
+      <div class="col-md-12 col-xs-12 col-lg-12">
+        <div fxLayout fxLayoutAlign="center center">
+          <mat-form-field fxFlex="40%">
+            <input matInput type="text" (keyup)="doFilter($event.target.value)" placeholder="Filter">
+          </mat-form-field>
+        </div>
+        <table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
+          <ng-container matColumnDef="{{column}}" *ngFor="let column of calColumns">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
+            <td mat-cell *matCellDef="let element"> {{element[column]}} </td>
+          </ng-container>
+          <ng-container matColumnDef="IsHof">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>Is Hof</th>
+            <td mat-cell *matCellDef="let element">
+              <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary"></mat-slide-toggle>  
+            </td>
+          </ng-container>
+            <ng-container matColumnDef="Active">
+              <th mat-header-cell *matHeaderCellDef mat-sort-header>Active</th>
+              <td mat-cell *matCellDef="let element">
+                <mat-slide-toggle [checked]="element.Active" name="Active" color="primary"></mat-slide-toggle>  
+              </td>
+          </ng-container>
+          <ng-container matColumnDef="Action">
+            <th mat-header-cell *matHeaderCellDef></th>
+            <td mat-cell *matCellDef="let element">      
+              <button mat-fab color="primary" aria-label="Example icon button with a delete icon" (click)="deleteCustomer(element)">
+                <mat-icon>delete</mat-icon>
+              </button>
+            </td>
+          </ng-container>
+          <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
+          <ng-container matColumnDef="expandedDetail">
+            <td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
+              <div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
+                <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
+                  <form class="example-form" (ngSubmit)="saveCustomer()">  
+                    <div class="row">     
+                      <div class="col-md-3 col-xs-3 col-lg-3">
+                      <mat-card>
+                        <mat-form-field>
+                        <mat-label>Name</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.Name}}" name="Name">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                        <mat-label>CardCategory</mat-label>
+                        <input matInput [(ngModel)]="element.CardCategory" name="CardCategory">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>CardNumber</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.CardNumber}}" name="CardNumber">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>AdharNo</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.AdharNo}}" name="AdharNo">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>MobileNo</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.MobileNo}}" name="MobileNo">
+                        </mat-form-field> 
+                        <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>             
+                        <mat-form-field [hidden]="element.IsHof">
+                          <mat-label>HofName</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" value="{{element.HofName}}" name="HofName">
+                        </mat-form-field>
+                      </mat-card>
+                      </div>
+                      <div class="col-md-3 col-xs-3 col-lg-3">
+                      <mat-card>
+                        <mat-form-field>
+                        <mat-label>Age</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.Age}}" name="Age">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                        <mat-label>Address</mat-label>
+                        <textarea matInput [(ngModel)]="element.Address" name="Address"></textarea>
+                        </mat-form-field>              
+                        <mat-form-field>
+                        <mat-label>RelationWithHof</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.RelationWithHof}}" name="RelationWithHof">
+                        </mat-form-field>
+                        <mat-form-field>
+                        <mat-label>GaurdianName</mat-label>
+                        <input matInput placeholder="Automatic From BackEnd" value="{{element.GaurdianName}}" name="GaurdianName">
+                        </mat-form-field>  
+                        <mat-form-field appearance="fill">
+                        <mat-label>GaurdianRelation</mat-label>
+                        <input matInput [(ngModel)]="element.GaurdianRelation" name="GaurdianRelation">
+                        </mat-form-field>
+                      </mat-card>
+                      </div>
+                      <div class="col-md-3 col-xs-3 col-lg-3">
+                      <mat-card>
+                        <mat-form-field appearance="fill">
+                        <mat-label>CreatedDate</mat-label>
+                        <input matInput [(ngModel)]="element.CreatedDate" name="CreatedDate">
+                        </mat-form-field>
+                        <mat-slide-toggle [checked]="element.Active" name="Active" color="primary" [(ngModel)]="element.Active">Active</mat-slide-toggle>
+                        <mat-form-field appearance="fill" [hidden]="element.Active">
+                          <mat-label>InactivatedDate</mat-label>
+                          <input matInput [(ngModel)]="element.InactivatedDate" name="InactivatedDate">
+                        </mat-form-field>
+                      </mat-card>
+                      </div>
+                      <div class="col-md-3 col-xs-3 col-lg-3">
+                        <mat-card>
+                          <mat-form-field>
+                            <mat-label>CustomerSerial</mat-label>
+                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.CustomerSerial}}" name="CustomerSerial">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>CustomerRowId</mat-label>
+                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.CustomerRowId}}" name="CustomerRowId">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>FamilyId</mat-label>
+                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.FamilyId}}" name="FamilyId">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>RelationWithHofId</mat-label>
+                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.RelationWithHofId}}" name="RelationWithHofId">
+                          </mat-form-field>
+                          <mat-form-field>
+                            <mat-label>HofId</mat-label>
+                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.HofId}}" name="HofId">
+                          </mat-form-field>
+                          <mat-form-field appearance="fill">
+                            <mat-label>GaurdianRelId</mat-label>
+                            <input matInput [(ngModel)]="element.GaurdianRelId" disabled name="GaurdianRelId">
+                          </mat-form-field>
+                          <mat-form-field appearance="fill">
+                            <mat-label>CardCategoryId</mat-label>
+                            <input matInput [(ngModel)]="element.CardCategoryId" disabled name="CardCategoryId">
+                          </mat-form-field>
+                        </mat-card> 
+                      </div>
+                    </div>
+                    <mat-card>
+                      <button mat-button type="submit">Save</button>
+                    </mat-card>
+                </form>        
+                </div>
+              </div>
+            </td>
+          </ng-container>
+            
+          <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+          <tr mat-row *matRowDef="let element; columns: displayedColumns;" 
+          [class.example-element-row]="true"
+          [class.example-expanded-row]="expandedElement === element" (click)="toggleRow(element)"
+          ></tr>
+          <tr mat-row *matRowDef="let element; columns: ['expandedDetail']" class="example-detail-row"></tr>
+        </table>
+        <mat-paginator [pageSize]="2" [pageSizeOptions]="[2, 4, 6, 10, 20]">
+        </mat-paginator>
+    </div>
 </div>
-<table mat-table [dataSource]="dataSource" multiTemplateDataRows class="mat-elevation-z8" matSort>
-	<ng-container matColumnDef="{{column}}" *ngFor="let column of calColumns">
-		<th mat-header-cell *matHeaderCellDef mat-sort-header> {{column}} </th>
-		<td mat-cell *matCellDef="let element"> {{element[column]}} </td>
-	</ng-container>
-  <ng-container matColumnDef="Action">
-    <th mat-header-cell *matHeaderCellDef> Action </th>
-    <td mat-cell *matCellDef="let element">
-      <button mat-icon-button color="warn" (click)="deleteCustomer(element)">
-        <mat-icon svgIcon="delete"></mat-icon>
-      </button>
-    </td>
-  </ng-container>
-  <!-- Expanded Content Column - The detail row is made up of this one column that spans across all columns -->
-	<ng-container matColumnDef="expandedDetail">
-		<td mat-cell *matCellDef="let element" [attr.colspan]="displayedColumns.length">
-			<div class="example-element-detail" [@detailExpand]="element == expandedElement ? 'expanded' : 'collapsed'">
-				<div class="inner-table mat-elevation-z8" *ngIf="expandedElement">          
-          <form class="example-form" (ngSubmit)="saveCustomer()">
-            <mat-card>
-              <mat-form-field appearance="fill">
-                <mat-label>Address</mat-label>
-                <textarea matInput [(ngModel)]="element.Address" name="Address"></textarea>
-              </mat-form-field>
-              <mat-form-field appearance="fill">
-                <mat-label>Relation_With_Hof</mat-label>
-                <input matInput [(ngModel)]="element.RelationWithHof" name="RelationWithHof">
-              </mat-form-field>
-            </mat-card>
-            <mat-card>
-              
-            </mat-card>
-            <mat-card>
-              <button mat-button type="submit">Save</button>
-            </mat-card>          
-        </form>
-				</div>
-			</div>
-		</td>
-	</ng-container>
-    
-	<tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-	<tr mat-row *matRowDef="let element; columns: displayedColumns;" 
-  [class.example-element-row]="true"
-  [class.example-expanded-row]="expandedElement === element" (click)="toggleRow(element)"
-  ></tr>
-  <tr mat-row *matRowDef="let element; columns: ['expandedDetail']" class="example-detail-row"></tr>
-</table>
-<mat-paginator [pageSize]="2" [pageSizeOptions]="[2, 4, 6, 10, 20]">
-</mat-paginator>

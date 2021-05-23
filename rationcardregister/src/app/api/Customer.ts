@@ -12,6 +12,7 @@ export interface Customer {
     CardNumber: string;
     IsHof: boolean | null;
     HofId: number | null;
+    HofName: string;
     GaurdianName: string;
     GaurdianRelation: string;
     GaurdianRelId: number;

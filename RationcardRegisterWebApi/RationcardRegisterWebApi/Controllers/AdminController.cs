@@ -41,18 +41,21 @@ namespace RationcardRegisterWebApi.Controllers
         [Route("CopyCustomersFromOldDb")]
         public async Task<bool> CopyCustomersFromOldDb()
         {
-            bool isSuccess = false;
-            var customers = new List<Repository.NewModels.MstCustomer>();
-            var dataClass = new OldDataMgmt(_oldContext, _newContext);
-            customers = await dataClass.FetchDataRaw();
+            bool isSuccess = true;
+            var customers = new List<Customer>();
+            var dataClass = new OldDataMgmt(_oldContext, _newContext, _unitOfWork, _mapper);
+            customers = await dataClass.FetchDataOld();
             try
             {
-                _repository.InsertRange(customers);
-                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+                if (_newContext.MstCustomers.Count() == 0)
+                {
+                    _repository.InsertRange(_mapper.Map<List<Customer>, List<Repository.NewModels.MstCustomer>>(customers));
+                    var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+                }
             }
             catch(Exception ex)
             {
-
+                isSuccess = false;
             }
             
             return isSuccess;

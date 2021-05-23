@@ -46,6 +46,7 @@ VALUES
 
 GO
 
+--Truncate table Mst_Rel
 INSERT INTO Mst_Rel
 (
 	Relation
@@ -69,5 +70,34 @@ VALUES
 ('Uncle'),
 ('Aunt'),
 ('Husband'),
-('Other')
+('Other'),
+('Granddaughter'),
+('Grandson'),
+('NA'),
+('Elder Sister Daughter'),
+('SonInLow'),
+('Granddaughter in law'),
+('Grandson in law'),
+('Nephew'),
+('Elder sister''s daughter'),
+('Elder sister''s Sons'),
+('Nephew Wife''s'),
+('Brother''s daughter'),
+('Brother''s son'),
+('Grandchild'),
+('Grandmother'),
+('Sister'),
+('self'),
+('Grandfather'),
+('Elder Brother'),
+('Elder Sister inlaw'),
+('Grand daughter'),
+('husband'),
+('Wife''s sister'),
+('Brother wife'),
+(''),
+('sister daughter'),
+('husband brother'),
+('uncle DAUGHTER'),
+('wife mother')
 GO
