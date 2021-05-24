@@ -108,19 +108,30 @@ export class CustomerSearchComponent implements OnInit {
   ngOnInit() {    
     this.getAllCustomers();    
   }
-  openDialog(cust: Customer) {
+  openDeleteDialog(cust: Customer) {
     this.dialogData = new DialogData();
     this.dialogData.Header = 'Delete Customer';
     this.dialogData.Body = 'You sure want to delete the customer!';
+    this.dialogData.DType = 'okcancel';
     const dialogRef = this.dialog.open(DialogComponent, {
       width: '250px',
       data: { pageValue: this.dialogData}
     });
-    
     dialogRef.afterClosed().subscribe(result => {
+      console.log(result);
       if(result){
         this.deleteCustomer(cust);
       }      
+    });
+  }
+  openInfoDialog(info: string, header:string) {
+    this.dialogData = new DialogData();
+    this.dialogData.Header = header;
+    this.dialogData.Body = info;
+    this.dialogData.DType = 'ok';
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: { pageValue: this.dialogData}
     });
   }
   getAllCustomers(){
@@ -174,7 +185,8 @@ export class CustomerSearchComponent implements OnInit {
         });
     }      
     else{
-      alert('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.');
+      this.openInfoDialog('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.',
+      'Delete Not Allowed!');
     }
   }
   addCustomer(cust: Customer){

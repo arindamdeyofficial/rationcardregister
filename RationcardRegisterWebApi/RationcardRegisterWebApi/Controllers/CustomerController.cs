@@ -98,7 +98,7 @@ namespace RationcardRegisterWebApi.Controllers
         [Route("DeleteCustomer")]
         public async Task<bool> DeleteCustomer(Customer cust)
         {
-            bool isSuccess = false;
+            bool isSuccess = true;
             try
             {
                 _newContext.MstCustomers.Remove(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
@@ -106,7 +106,7 @@ namespace RationcardRegisterWebApi.Controllers
             }
             catch (Exception ex)
             {
-
+                isSuccess = false;
             }
             return isSuccess;
         }
@@ -115,7 +115,7 @@ namespace RationcardRegisterWebApi.Controllers
         [Route("AddCustomer")]
         public async Task<bool> AddCustomer(Customer cust)
         {
-            bool isSuccess = false;
+            bool isSuccess = true;
             try
             {
                 _newContext.MstCustomers.Add(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
@@ -123,7 +123,7 @@ namespace RationcardRegisterWebApi.Controllers
             }
             catch (Exception ex)
             {
-
+                isSuccess = false;
             }
             return isSuccess;
         }
@@ -132,7 +132,7 @@ namespace RationcardRegisterWebApi.Controllers
         [Route("UpdateCustomer")]
         public async Task<bool> UpdateCustomer(Customer cust)
         {
-            bool isSuccess = false;
+            bool isSuccess = true;
             try
             {
                 _newContext.MstCustomers.Update(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
@@ -140,7 +140,7 @@ namespace RationcardRegisterWebApi.Controllers
             }
             catch (Exception ex)
             {
-
+                isSuccess = false;
             }
             return isSuccess;
         }

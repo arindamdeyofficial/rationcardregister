@@ -22,4 +22,5 @@ export class DialogComponent implements OnInit {
 export class DialogData {
   Header: string;
   Body: string;
+  DType: string;
 }
