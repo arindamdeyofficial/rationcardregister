@@ -112,30 +112,20 @@ namespace RationcardRegisterWebApi.Controllers
         }
 
         [HttpPost]
-        [Route("AddCustomer")]
-        public async Task<bool> AddCustomer(Customer cust)
+        [Route("AddOrEditCustomer")]
+        public async Task<bool> AddOrEditCustomer(Customer cust)
         {
             bool isSuccess = true;
             try
             {
-                _newContext.MstCustomers.Add(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
-                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
-            }
-            catch (Exception ex)
-            {
-                isSuccess = false;
-            }
-            return isSuccess;
-        }
-
-        [HttpPost]
-        [Route("UpdateCustomer")]
-        public async Task<bool> UpdateCustomer(Customer cust)
-        {
-            bool isSuccess = true;
-            try
-            {
-                _newContext.MstCustomers.Update(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                if (_newContext.MstCustomers.Any(a => a.Equals(cust)))
+                {
+                    _newContext.MstCustomers.Update(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                }
+                else
+                {
+                    _newContext.MstCustomers.Add(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
+                }
                 var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
             }
             catch (Exception ex)

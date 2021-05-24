@@ -47,15 +47,8 @@ export class FetchCustomerData {
         catchError(this.handleError) // then handle the error
       );
   }
-  AddCustomer(cust: Customer) {
-    return this.http.post<Boolean>(this.baseUrl + '/Customer/AddCustomer', cust, this.httpOptions)
-      .pipe(
-        retry(3), // retry a failed request up to 3 times
-        catchError(this.handleError) // then handle the error
-      );
-  }
-  UpdateCustomer(cust: Customer) {
-    return this.http.post<Boolean>(this.baseUrl + '/Customer/UpdateCustomer', cust, this.httpOptions)
+  AddOrEditCustomer(cust: Customer) {
+    return this.http.post<Boolean>(this.baseUrl + '/Customer/AddOrEditCustomer', cust, this.httpOptions)
       .pipe(
         retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error

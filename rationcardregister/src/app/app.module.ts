@@ -50,7 +50,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
-import {NgForm, FormsModule, ReactiveFormsModule, FormControl, Validators} from '@angular/forms';
+import {NgForm, FormsModule, ReactiveFormsModule, FormControl, Validators, FormBuilder, FormGroup} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -64,7 +64,6 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 import { NotificationComponent } from './notification/notification.component';
 import { LandingpageComponent } from './landingpage/landingpage.component';
 import { DialogComponent } from './dialog/dialog.component';
-import { AddnewCustomerComponent } from './addnew-customer/addnew-customer.component';
 
 
 @NgModule({
@@ -79,8 +78,7 @@ import { AddnewCustomerComponent } from './addnew-customer/addnew-customer.compo
     UserprofileComponent,
     NotificationComponent,
     LandingpageComponent,
-    DialogComponent,
-    AddnewCustomerComponent
+    DialogComponent
   ],
   imports: [
     BrowserModule,
@@ -139,7 +137,9 @@ import { AddnewCustomerComponent } from './addnew-customer/addnew-customer.compo
     MatTooltipModule,
     MatTreeModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    FormBuilder, 
+    FormGroup
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },

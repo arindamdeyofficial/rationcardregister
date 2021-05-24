@@ -216,7 +216,8 @@ export class CustomerSearchComponent implements OnInit {
     console.log('after add || dataSource length: ' + this.dataSource.data.length.toString()
     + 'customer array length: ' + this.customers.length);
   }
-  addCustomer(cust: Customer){
+  addOrEditCustomer(cust: Customer){
+    console.log(cust);
     this.dialogData = new DialogData();
     this.dialogData.Header = 'Add New Customer';
     this.dialogData.Body = 'Sure? you want to add this customer!';
@@ -227,7 +228,7 @@ export class CustomerSearchComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe(result => {
       if(result){
-        this.fetchCustomerDataService.AddCustomer(cust)
+        this.fetchCustomerDataService.AddOrEditCustomer(cust)
       .subscribe(        
         (data: boolean) => {
           console.log(data);
@@ -236,15 +237,6 @@ export class CustomerSearchComponent implements OnInit {
         });
       }      
     });
-  }
-  updateCustomer(cust: Customer){
-    this.fetchCustomerDataService.UpdateCustomer(cust)
-      .subscribe(        
-        (data: boolean) => {
-          console.log(data);
-        }, (err) => {
-          console.log('-----> err', err);
-        });
   }
 
   public doFilter = (value: string) => {
