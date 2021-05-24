@@ -50,7 +50,7 @@ import {platformBrowserDynamic} from '@angular/platform-browser-dynamic';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import {MAT_FORM_FIELD_DEFAULT_OPTIONS} from '@angular/material/form-field';
 
-import {NgForm, FormsModule, ReactiveFormsModule, FormControl, Validators, FormBuilder, FormGroup} from '@angular/forms';
+import {NgForm, FormsModule, ReactiveFormsModule, FormControl, Validators} from '@angular/forms';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
@@ -137,9 +137,7 @@ import { DialogComponent } from './dialog/dialog.component';
     MatTooltipModule,
     MatTreeModule,
     FormsModule,
-    ReactiveFormsModule,
-    FormBuilder, 
-    FormGroup
+    ReactiveFormsModule
   ],
   providers: [
     { provide: MAT_FORM_FIELD_DEFAULT_OPTIONS, useValue: { appearance: 'fill' } },
