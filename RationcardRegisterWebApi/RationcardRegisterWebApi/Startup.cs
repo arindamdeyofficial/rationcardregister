@@ -35,7 +35,9 @@ namespace RationcardRegisterWebApi
                 options.AddPolicy(name: MyAllowSpecificOrigins,
                                   builder =>
                                   {
-                                      builder.AllowAnyOrigin();
+                                      builder.AllowAnyOrigin()
+                                      .AllowAnyHeader() //Access-Control-Allow-Origin
+                                      ;
                                   });
             });
             services.AddControllers();
@@ -58,11 +60,12 @@ namespace RationcardRegisterWebApi
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "RationcardRegisterWebApi v1"));
             }
-            app.UseCors(MyAllowSpecificOrigins);
+            
             app.UseHttpsRedirection();
 
             app.UseRouting();
-
+            //https://docs.microsoft.com/en-us/aspnet/core/security/cors?view=aspnetcore-5.0
+            app.UseCors(MyAllowSpecificOrigins);
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>

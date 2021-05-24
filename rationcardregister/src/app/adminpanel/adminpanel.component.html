@@ -1,1 +1,7 @@
-<p>adminpanel works!</p>
+<br>
+    <div class="row">
+      <mat-progress-bar mode="query" [hidden]="!dbCopyStatus"></mat-progress-bar>
+    </div>
+    <div class="row"> 
+<button mat-raised-button color="primary" (click)="CopyCustomersFromOldDb()">Migrate all customers and Rationcard Information from old database to new database</button>
+</div>

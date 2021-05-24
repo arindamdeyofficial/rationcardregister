@@ -93,8 +93,7 @@ namespace RationcardRegisterWebApi.Controllers
             }
             return customers;
         }
-
-        [DisableCors]
+       
         [HttpPost]
         [Route("DeleteCustomer")]
         public async Task<bool> DeleteCustomer(Customer cust)

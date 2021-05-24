@@ -36,7 +36,7 @@ import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/materi
 import {Subject} from 'rxjs';
 import { books } from 'googleapis/build/src/apis/books';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
-import { DialogComponent } from '../dialog/dialog.component';
+import { DialogComponent, DialogData } from '../dialog/dialog.component';
 
 @Component({
   selector: 'app-customer-search',
@@ -97,6 +97,7 @@ export class CustomerSearchComponent implements OnInit {
   cardCats: Array<CardCategory>;
   relations: Array<Relation>;
   error: any;
+  dialogData: DialogData;
   constructor(
     private cd: ChangeDetectorRef,
     private fetchCustomerDataService: FetchCustomerData,
@@ -108,10 +109,18 @@ export class CustomerSearchComponent implements OnInit {
     this.getAllCustomers();    
   }
   openDialog(cust: Customer) {
-    const dialogRef = this.dialog.open(DialogComponent);
-
+    this.dialogData = new DialogData();
+    this.dialogData.Header = 'Delete Customer';
+    this.dialogData.Body = 'You sure want to delete the customer!';
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: { pageValue: this.dialogData}
+    });
+    
     dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
+      if(result){
+        this.deleteCustomer(cust);
+      }      
     });
   }
   getAllCustomers(){

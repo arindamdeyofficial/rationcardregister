@@ -18,6 +18,14 @@ export class FetchCustomerData {
       })
     };
   constructor(private http: HttpClient) { }
+
+  CopyCustomersFromOldDb() {
+    return this.http.get<boolean>(this.baseUrl + '/Admin/CopyCustomersFromOldDb')
+      .pipe(
+        retry(3), // retry a failed request up to 3 times
+        catchError(this.handleError) // then handle the error
+      );
+  }
   GetMasterData() {
     return this.http.get<MasterData>(this.baseUrl + '/Customer/GetMasterData')
       .pipe(
