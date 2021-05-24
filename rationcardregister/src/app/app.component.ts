@@ -48,7 +48,10 @@ export class AppComponent {
           sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/account_box_black_24dp.svg')) 
         .addSvgIcon(
           'delete',
-          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/delete_black_24dp.svg'))    
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/delete_black_24dp.svg'))  
+        .addSvgIcon(
+          'add',
+          sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/add_circle_black_24dp.svg'))     
             ;
     this.mobileQuery = media.matchMedia('(max-width: 600px)');
     this._mobileQueryListener = () => changeDetectorRef.detectChanges();

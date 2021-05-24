@@ -91,7 +91,7 @@ namespace RationcardRegisterWebApi.Controllers
             {
 
             }
-            return customers;
+            return customers.GetRange(0, 10);
         }
        
         [HttpPost]

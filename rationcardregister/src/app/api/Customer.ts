@@ -1,4 +1,4 @@
-export interface Customer {
+export class Customer {
     CustomerSerial: number;
     CustomerRowId: number;
     FamilyId: number;
@@ -21,4 +21,7 @@ export interface Customer {
     CardCategoryId: number;
     CreatedDate: Date | null;
     InactivatedDate: Date | null;
+    constructor() { 
+
     }
+}
