@@ -4,4 +4,5 @@ export interface Hof {
     HofMobileNumber: string;
     HofCardNumber:string;
     HofActiveCard: number;
+    FamilyId: number;
     }

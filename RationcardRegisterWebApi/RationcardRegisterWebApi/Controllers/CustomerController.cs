@@ -51,11 +51,12 @@ namespace RationcardRegisterWebApi.Controllers
                     {
                         HofId = c.HofId??0,
                         HofActiveCard = masterData.Customers
-                                        .Where(cu => cu.HofId.Equals(c.CustomerRowId) 
+                                        .Where(cu => cu.HofId.Equals(c.CustomerSerial) 
                                                 && (cu.Active??false)).Count(),
                         HofCardNumber = c.CardNumber,
-                        HofMobileNumber = c.CardNumber,
-                        HofName = c.Name
+                        HofMobileNumber = c.MobileNo,
+                        HofName = c.Name,
+                        FamilyId = c.FamilyId??0
                     }).ToList();
                 masterData.CardCategories = _newContext.MstCats.Select(cat =>
                     new CardCategory

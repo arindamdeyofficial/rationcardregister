@@ -33,13 +33,14 @@ import {
   ReactiveFormsModule
 } from '@angular/forms';
 import {MAT_FORM_FIELD, MatFormField, MatFormFieldControl} from '@angular/material/form-field';
-import {Subject} from 'rxjs';
+import {Subject, Observable} from 'rxjs';
 import { books } from 'googleapis/build/src/apis/books';
 import {MatDialog, MatDialogModule} from '@angular/material/dialog';
 import { DialogComponent, DialogData } from '../dialog/dialog.component';
 import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
 import {MediaMatcher} from '@angular/cdk/layout';
+import {map, startWith} from 'rxjs/operators';
 
 @Component({
   selector: 'app-customer-search',
@@ -57,6 +58,9 @@ import {MediaMatcher} from '@angular/cdk/layout';
 export class CustomerSearchComponent implements OnInit {
   @ViewChild(MatSort) sort: MatSort;
   @ViewChild(MatPaginator) paginator: MatPaginator;
+
+  //validation start
+
   phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
   dt = new FormControl('', [Validators.required, Validators.pattern(/^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/)]);
   agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{1,3}$/)]);
@@ -79,6 +83,13 @@ export class CustomerSearchComponent implements OnInit {
     }
     return this.agev.hasError('pattern') ? 'Not a valid Age' : '';
   }
+//validation ends
+
+  //list autocomplete start
+  hofCtrl = new FormControl();
+  filteredHofs: Observable<Hof[]>;
+  selectedHof: Hof;
+  //list autocomplete end
 
   dataSource: MatTableDataSource<Customer>;
   expandedElement: Customer | null;
@@ -102,6 +113,7 @@ export class CustomerSearchComponent implements OnInit {
   error: any;
   dialogData: DialogData;
   newCustomer: Customer;
+
   constructor(
     private cd: ChangeDetectorRef,
     private fetchCustomerDataService: FetchCustomerData,
@@ -112,9 +124,52 @@ export class CustomerSearchComponent implements OnInit {
     iconRegistry
     .addSvgIcon(
       'add',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/add_circle_black_24dp.svg')) ;
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/add_circle_black_24dp.svg')) 
+    .addSvgIcon(
+      'call',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/call_black_24dp.svg')) 
+    .addSvgIcon(
+      'card',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/credit_card_black_24dp.svg')) 
+    .addSvgIcon(
+      'hof',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/supervisor_account_black_24dp.svg'))
+    .addSvgIcon(
+      'adhar',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/card_membership_black_24dp.svg')) 
+    .addSvgIcon(
+      'done',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/done_all_black_24dp.svg'))
+    .addSvgIcon(
+      'contact',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/assignment_ind_black_24dp.svg'))
+    .addSvgIcon(
+      'birthday',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/cake_black_24dp.svg'))      
+    .addSvgIcon(
+      'gaurdian',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/groups_black_24dp.svg'))
+    .addSvgIcon(
+      'relation',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/wc_black_24dp.svg'))
+    .addSvgIcon(
+      'address',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/gite_black_24dp.svg'))
+      ;
+
+      //list autocomplete
+      this.filteredHofs = this.hofCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(val => val ? this._filterHofs(val) : this.hofs.slice())
+      );
   }
-  
+  //filter autocomplete list
+  private _filterHofs(value: string): Hof[] {
+    const filterValue = value.toLowerCase();
+
+    return this.hofs.filter(h => h.HofName.toLowerCase().indexOf(filterValue) === 0);
+  }
 
   ngOnInit() {    
     this.getAllCustomers();    
@@ -263,7 +318,6 @@ export class CustomerSearchComponent implements OnInit {
       }      
     });
   }
-
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }

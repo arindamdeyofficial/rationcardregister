@@ -18,5 +18,7 @@ namespace BusinessModel
         public string HofCardNumber { get; set; }
         [JsonPropertyName("HofActiveCard")]
         public int HofActiveCard { get; set; }
+        [JsonPropertyName("FamilyId")]
+        public int FamilyId { get; set; }
     }
 }
