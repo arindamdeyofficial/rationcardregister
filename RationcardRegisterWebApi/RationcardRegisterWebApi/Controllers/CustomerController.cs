@@ -118,15 +118,17 @@ namespace RationcardRegisterWebApi.Controllers
             bool isSuccess = true;
             try
             {
-                if (_newContext.MstCustomers.Any(a => a.Equals(cust)))
-                {
-                    _newContext.MstCustomers.Update(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
-                }
-                else
-                {
-                    _newContext.MstCustomers.Add(_mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust));
-                }
-                var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
+                var contextCust = _mapper.Map<Customer, Repository.NewModels.MstCustomer>(cust);
+                var isExists = _newContext.MstCustomers.Any(a => a.CustomerRowId.Equals(contextCust.CustomerRowId));
+                //    if (isExists)
+                //    {
+                //        _newContext.MstCustomers.Update(contextCust);
+                //    }
+                //    else
+                //    {
+                //        _newContext.MstCustomers.Add(contextCust);
+                //    }
+                //    var result = await _unitOfWork.CompleteAsync().ConfigureAwait(false);
             }
             catch (Exception ex)
             {

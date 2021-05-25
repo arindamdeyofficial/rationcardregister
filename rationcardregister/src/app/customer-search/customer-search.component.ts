@@ -218,6 +218,25 @@ export class CustomerSearchComponent implements OnInit {
   }
   addOrEditCustomer(cust: Customer){
     console.log(cust);
+    var isNewRecord = cust.CustomerRowId == undefined;
+    if(isNewRecord){
+      var relG = this.relations.find(r => r.RelationDesc == cust.GaurdianRelation);
+      if(relG != undefined){
+        cust.GaurdianRelId = relG.RelationId;
+      }
+      var relH = this.relations.find(r => r.RelationDesc == cust.RelationWithHof);
+      if(relH != undefined){
+        cust.RelationWithHofId = relH.RelationId;
+      }
+      var hof = this.hofs.find(r => r.HofName == cust.HofName);
+      if(hof != undefined){
+        cust.HofId = hof.HofId;
+      }
+      var cat = this.cardCats.find(r => r.CardCategoryDesc == cust.CardCategory);
+      if(cat != undefined){
+        cust.CardCategoryId = cat.CardCategoryId;
+      }
+    }
     this.dialogData = new DialogData();
     this.dialogData.Header = 'Add New Customer';
     this.dialogData.Body = 'Sure? you want to add this customer!';
@@ -232,6 +251,12 @@ export class CustomerSearchComponent implements OnInit {
       .subscribe(        
         (data: boolean) => {
           console.log(data);
+          if(data && isNewRecord){
+            this.customers = [cust, ...this.customers];
+            this.dataSource = new MatTableDataSource(this.customers); 
+            this.dataSource.sort = this.sort;
+            this.dataSource.paginator = this.paginator;
+          }
         }, (err) => {
           console.log('-----> err', err);
         });

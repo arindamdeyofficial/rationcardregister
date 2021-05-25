@@ -65,28 +65,28 @@
                                 [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>             
                         <mat-form-field [hidden]="element.IsHof">
                           <mat-label>HofName</mat-label>
-                          <input matInput placeholder="Ex. Head Of the family Name" value="{{element.HofName}}" name="HofName">
+                          <input matInput placeholder="Ex. Head Of the family Name" [(ngModel)]="element.HofName" name="HofName">
                         </mat-form-field>
                         <mat-form-field>
                           <mat-label>Name</mat-label>
-                          <input matInput placeholder="Ex. Customer Name" value="{{element.Name}}" name="Name">
+                          <input matInput placeholder="Ex. Customer Name" [(ngModel)]="element.Name" name="Name">
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                           <mat-label>CardCategory</mat-label>
-                          <input matInput value="{{element.CardCategory}}" name="CardCategory" placeholder="Ex. SPHH" >
+                          <input matInput [(ngModel)]="element.CardCategory" name="CardCategory" placeholder="Ex. SPHH" >
                         </mat-form-field>
                         <mat-form-field>
                           <mat-label>CardNumber</mat-label>
-                          <input matInput placeholder="Ex. SPHH-0051003419" value="{{element.CardNumber}}" name="CardNumber">
+                          <input matInput placeholder="Ex. SPHH-0051003419" [(ngModel)]="element.CardNumber" name="CardNumber">
                         </mat-form-field>
                         <mat-form-field>
                           <mat-label>AdharNo</mat-label>
-                          <input matInput placeholder="Ex. 123245879654" value="{{element.AdharNo}}" name="AdharNo">
+                          <input matInput placeholder="Ex. 123245879654" [(ngModel)]="element.AdharNo" name="AdharNo">
                         </mat-form-field>                       
                         <mat-form-field>
                           <mat-label>MobileNo</mat-label>
                           <input matInput placeholder="Ex. 9864758477"  name="MobileNo"
-                          value="{{element.MobileNo}}" >
+                          [(ngModel)]="element.MobileNo" >
                         </mat-form-field> 
                       </mat-card>
                       </div>
@@ -94,23 +94,23 @@
                       <mat-card>
                         <mat-form-field>
                           <mat-label>Age</mat-label>
-                          <input matInput placeholder="Ex. 35" value="{{element.Age}}" name="Age">
+                          <input matInput placeholder="Ex. 35" [(ngModel)]="element.Age" name="Age">
                         </mat-form-field>
                         <mat-form-field appearance="fill">
                         <mat-label>Address</mat-label>
-                        <textarea matInput value="{{element.Address}}" name="Address" placeholder="Ex. Address"></textarea>
+                        <textarea matInput [(ngModel)]="element.Address" name="Address" placeholder="Ex. Address"></textarea>
                         </mat-form-field>              
                         <mat-form-field>
                         <mat-label>RelationWithHof</mat-label>
-                        <input matInput placeholder="Ex. Father" value="{{element.RelationWithHof}}" name="RelationWithHof">
+                        <input matInput placeholder="Ex. Father" [(ngModel)]="element.RelationWithHof" name="RelationWithHof">
                         </mat-form-field>
                         <mat-form-field>
                         <mat-label>GaurdianName</mat-label>
-                        <input matInput placeholder="Ex. Mostly Hof name if same" value="{{element.GaurdianName}}" name="GaurdianName">
+                        <input matInput placeholder="Ex. Mostly Hof name if same" [(ngModel)]="element.GaurdianName" name="GaurdianName">
                         </mat-form-field>  
                         <mat-form-field appearance="fill">
                         <mat-label>GaurdianRelation</mat-label>
-                        <input matInput value="{{element.GaurdianRelation}}" name="GaurdianRelation" placeholder="Ex. Father">
+                        <input matInput [(ngModel)]="element.GaurdianRelation" name="GaurdianRelation" placeholder="Ex. Father">
                         </mat-form-field>
                       </mat-card>
                       </div>
@@ -119,7 +119,7 @@
                         <mat-form-field appearance="fill">
                           <mat-label>CreatedDate</mat-label>
                           <input matInput [matDatepicker]="pickerCreatedDate"
-                          value="{{element.CreatedDate}}" placeholder="Ex. mm/dd/yyyy">
+                          [(ngModel)]="element.CreatedDate" placeholder="Ex. mm/dd/yyyy">
                           <mat-datepicker-toggle matSuffix [for]="pickerCreatedDate"></mat-datepicker-toggle>
                           <mat-datepicker #pickerCreatedDate></mat-datepicker>
                         </mat-form-field>
@@ -127,7 +127,7 @@
                         <mat-form-field appearance="fill" [hidden]="element.Active">
                           <mat-label>InactivatedDate</mat-label>
                           <input matInput name="InactivatedDate" matInput [matDatepicker]="pickerInactivatedDate"
-                          value="{{element.InactivatedDate}}" placeholder="Ex. mm/dd/yyyy">
+                          [(ngModel)]="element.InactivatedDate" placeholder="Ex. mm/dd/yyyy">
                           <mat-datepicker-toggle matSuffix [for]="pickerInactivatedDate"></mat-datepicker-toggle>
                           <mat-datepicker #pickerInactivatedDate></mat-datepicker>
                         </mat-form-field>
@@ -137,31 +137,31 @@
                         <mat-card>
                           <mat-form-field>
                             <mat-label>CustomerSerial</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.CustomerSerial}}" name="CustomerSerial">
+                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerSerial" name="CustomerSerial">
                           </mat-form-field>
                           <mat-form-field>
                             <mat-label>CustomerRowId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.CustomerRowId}}" name="CustomerRowId">
+                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerRowId" name="CustomerRowId">
                           </mat-form-field>
                           <mat-form-field>
                             <mat-label>FamilyId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.FamilyId}}" name="FamilyId">
+                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.FamilyId" name="FamilyId">
                           </mat-form-field>
                           <mat-form-field>
                             <mat-label>RelationWithHofId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.RelationWithHofId}}" name="RelationWithHofId">
+                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.RelationWithHofId" name="RelationWithHofId">
                           </mat-form-field>
                           <mat-form-field>
                             <mat-label>HofId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" disabled value="{{element.HofId}}" name="HofId">
+                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.HofId" name="HofId">
                           </mat-form-field>
                           <mat-form-field appearance="fill">
                             <mat-label>GaurdianRelId</mat-label>
-                            <input matInput value="{{element.GaurdianRelId}}" disabled name="GaurdianRelId" placeholder="Automatic From BackEnd">
+                            <input matInput [(ngModel)]="element.GaurdianRelId" name="GaurdianRelId" placeholder="Automatic From BackEnd">
                           </mat-form-field>
                           <mat-form-field appearance="fill">
                             <mat-label>CardCategoryId</mat-label>
-                            <input matInput value="{{element.CardCategoryId}}" disabled name="CardCategoryId" placeholder="Automatic From BackEnd">
+                            <input matInput [(ngModel)]="element.CardCategoryId" name="CardCategoryId" placeholder="Automatic From BackEnd">
                           </mat-form-field>
                         </mat-card> 
                       </div>
