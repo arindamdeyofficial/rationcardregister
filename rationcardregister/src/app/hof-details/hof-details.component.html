@@ -1,0 +1,18 @@
+<h2 mat-dialog-title>Head of the family Details</h2>
+<mat-dialog-content class="mat-typography">  
+  <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+  <small>Family Id: {{hof.FamilyId}}</small>
+  <mat-icon matSuffix svgIcon="hof"></mat-icon>
+  <small>HofId: {{hof.HofId}}</small>
+  <mat-icon matSuffix svgIcon="contact"></mat-icon>
+  <small>{{hof.HofName}}</small>
+  <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+  <small>{{hof.HofActiveCard}} Active Cards</small>
+  <mat-icon matSuffix svgIcon="call"></mat-icon>
+  <small>{{hof.HofMobileNumber}}</small>                              
+  <mat-icon matSuffix svgIcon="card"></mat-icon>
+  <small>{{hof.HofCardNumber}}</small>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>ok</button>
+</mat-dialog-actions>

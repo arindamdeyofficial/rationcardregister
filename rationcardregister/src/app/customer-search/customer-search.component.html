@@ -59,36 +59,53 @@
                 <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
                   <form class="example-form" #customerForm="ngForm" (ngSubmit)="addOrEditCustomer(customerForm.value)">  
                     <div class="row">     
-                      <div class="col-md-3 col-xs-3 col-lg-3">
+                      <div class="col-md-6 col-xs-6 col-lg-6">
                       <mat-card>
-
-
                         <mat-form-field>
                           <mat-label>Hofs</mat-label>
                           <input matInput
                                  aria-label="Hof"
                                  [matAutocomplete]="auto"
-                                 [formControl]="hofCtrl">
+                                 [formControl]="hofCtrl"
+                                 [(ngModel)]="element.SelectedHof">
                           <mat-icon matSuffix svgIcon="hof"></mat-icon>
-                          <mat-autocomplete #auto="matAutocomplete">
-                            <mat-option *ngFor="let hof of filteredHofs | async" [value]="hof.HofName">
-                              <mat-icon matSuffix svgIcon="hof"></mat-icon>
-                              <small>HofId: {{hof.HofId}}</small>
-                              <mat-icon matSuffix svgIcon="contact"></mat-icon>
-                              <small>{{hof.HofName}}</small>
-                              <mat-icon matSuffix svgIcon="call"></mat-icon>
-                              <small>{{hof.HofMobileNumber}}</small>
-                              <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
-                              <small>{{hof.HofActiveCard}} Active Cards</small>
-                              <mat-icon matSuffix svgIcon="card"></mat-icon>
-                              <small>{{hof.HofCardNumber}}</small> 
-                              <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
-                              <small>Family Id: {{hof.FamilyId}}</small>
+                          <mat-autocomplete #auto="matAutocomplete"
+                          (optionSelected)='hofSelected($event.option.value, element.CustomerSerial)' [displayWith]="displayHofSelect">
+                            <mat-option *ngFor="let hof of filteredHofs | async" [value]="hof">
+                              <button mat-icon-button aria-label="Example icon button with a vertical three dot icon"
+                                (click)="showHofDialog(hof)">
+                                <mat-icon>more_vert</mat-icon>
+                                </button>          
+                                <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+                                <small>Family Id: {{hof.FamilyId}}</small>
+                                <mat-icon matSuffix svgIcon="hof"></mat-icon>
+                                <small>HofId: {{hof.HofId}}</small>
+                                <mat-icon matSuffix svgIcon="contact"></mat-icon>
+                                <small>{{hof.HofName}}</small>
+                                <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+                                <small>{{hof.HofActiveCard}} Active Cards</small>
+                                <mat-icon matSuffix svgIcon="call"></mat-icon>
+                                <small>{{hof.HofMobileNumber}}</small>                              
+                                <mat-icon matSuffix svgIcon="card"></mat-icon>
+                                <small>{{hof.HofCardNumber}}</small>                                             
                             </mat-option>
                           </mat-autocomplete>
                         </mat-form-field>
-
-
+                        <mat-card>
+                          <div>Head Of the Family Details:</div>
+                          <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+                          <small>Family Id: {{element.SelectedHof.FamilyId}}</small>
+                          <mat-icon matSuffix svgIcon="hof"></mat-icon>
+                          <small>HofId: {{element.SelectedHof.HofId}}</small>
+                          <mat-icon matSuffix svgIcon="contact"></mat-icon>
+                          <small>{{element.SelectedHof.HofName}}</small>
+                          <mat-icon matSuffix svgIcon="gaurdian"></mat-icon>
+                          <small>{{element.SelectedHof.HofActiveCard}} Active Cards</small>
+                          <mat-icon matSuffix svgIcon="call"></mat-icon>
+                          <small>{{element.SelectedHof.HofMobileNumber}}</small>                              
+                          <mat-icon matSuffix svgIcon="card"></mat-icon>
+                          <small>{{element.SelectedHof.HofCardNumber}}</small> 
+                        </mat-card>
                         <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" 
                                 [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>             
                         <mat-form-field [hidden]="element.IsHof">
@@ -121,7 +138,12 @@
                           <input matInput placeholder="Ex. 9864758477"  name="MobileNo"
                           [(ngModel)]="element.MobileNo" >
                           <mat-icon matSuffix svgIcon="call"></mat-icon>
-                        </mat-form-field> 
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                          <mat-label>Address</mat-label>
+                          <textarea matInput [(ngModel)]="element.Address" name="Address" placeholder="Ex. Address"></textarea>
+                          <mat-icon matSuffix svgIcon="address"></mat-icon>
+                          </mat-form-field> 
                       </mat-card>
                       </div>
                       <div class="col-md-3 col-xs-3 col-lg-3">
@@ -131,11 +153,6 @@
                           <input matInput placeholder="Ex. 35" [(ngModel)]="element.Age" name="Age">
                           <mat-icon matSuffix svgIcon="birthday"></mat-icon>
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
-                        <mat-label>Address</mat-label>
-                        <textarea matInput [(ngModel)]="element.Address" name="Address" placeholder="Ex. Address"></textarea>
-                        <mat-icon matSuffix svgIcon="address"></mat-icon>
-                        </mat-form-field>              
                         <mat-form-field>
                         <mat-label>RelationWithHof</mat-label>
                         <input matInput placeholder="Ex. Father" [(ngModel)]="element.RelationWithHof" name="RelationWithHof">
@@ -151,10 +168,6 @@
                         <input matInput [(ngModel)]="element.GaurdianRelation" name="GaurdianRelation" placeholder="Ex. Father">
                         <mat-icon matSuffix svgIcon="relation"></mat-icon>
                         </mat-form-field>
-                      </mat-card>
-                      </div>
-                      <div class="col-md-3 col-xs-3 col-lg-3">
-                      <mat-card>
                         <mat-form-field appearance="fill">
                           <mat-label>CreatedDate</mat-label>
                           <input matInput [matDatepicker]="pickerCreatedDate"
@@ -173,36 +186,36 @@
                       </mat-card>
                       </div>
                       <div class="col-md-3 col-xs-3 col-lg-3">
-                        <mat-card>
-                          <mat-form-field>
-                            <mat-label>CustomerSerial</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerSerial" name="CustomerSerial">
-                          </mat-form-field>
-                          <mat-form-field>
-                            <mat-label>CustomerRowId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerRowId" name="CustomerRowId">
-                          </mat-form-field>
-                          <mat-form-field>
-                            <mat-label>FamilyId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.FamilyId" name="FamilyId">
-                          </mat-form-field>
-                          <mat-form-field>
-                            <mat-label>RelationWithHofId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.RelationWithHofId" name="RelationWithHofId">
-                          </mat-form-field>
-                          <mat-form-field>
-                            <mat-label>HofId</mat-label>
-                            <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.HofId" name="HofId">
-                          </mat-form-field>
-                          <mat-form-field appearance="fill">
-                            <mat-label>GaurdianRelId</mat-label>
-                            <input matInput [(ngModel)]="element.GaurdianRelId" name="GaurdianRelId" placeholder="Automatic From BackEnd">
-                          </mat-form-field>
-                          <mat-form-field appearance="fill">
-                            <mat-label>CardCategoryId</mat-label>
-                            <input matInput [(ngModel)]="element.CardCategoryId" name="CardCategoryId" placeholder="Automatic From BackEnd">
-                          </mat-form-field>
-                        </mat-card> 
+                      <mat-card>                        
+                        <mat-form-field>
+                          <mat-label>CustomerSerial</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerSerial" name="CustomerSerial">
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>CustomerRowId</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerRowId" name="CustomerRowId">
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>FamilyId</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.FamilyId" name="FamilyId">
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>RelationWithHofId</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.RelationWithHofId" name="RelationWithHofId">
+                        </mat-form-field>
+                        <mat-form-field>
+                          <mat-label>HofId</mat-label>
+                          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.HofId" name="HofId">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                          <mat-label>GaurdianRelId</mat-label>
+                          <input matInput [(ngModel)]="element.GaurdianRelId" name="GaurdianRelId" placeholder="Automatic From BackEnd">
+                        </mat-form-field>
+                        <mat-form-field appearance="fill">
+                          <mat-label>CardCategoryId</mat-label>
+                          <input matInput [(ngModel)]="element.CardCategoryId" name="CardCategoryId" placeholder="Automatic From BackEnd">
+                        </mat-form-field>
+                      </mat-card>
                       </div>
                     </div>
                     <mat-card>

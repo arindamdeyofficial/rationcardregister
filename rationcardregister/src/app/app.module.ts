@@ -64,6 +64,7 @@ import { UserprofileComponent } from './userprofile/userprofile.component';
 import { NotificationComponent } from './notification/notification.component';
 import { LandingpageComponent } from './landingpage/landingpage.component';
 import { DialogComponent } from './dialog/dialog.component';
+import { HofDetailsComponent } from './hof-details/hof-details.component';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { DialogComponent } from './dialog/dialog.component';
     UserprofileComponent,
     NotificationComponent,
     LandingpageComponent,
-    DialogComponent
+    DialogComponent,
+    HofDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -135,7 +137,7 @@ import { DialogComponent } from './dialog/dialog.component';
     MatTabsModule,
     MatToolbarModule,
     MatTooltipModule,
-    MatTreeModule,
+    MatTreeModule,    
     FormsModule,
     ReactiveFormsModule
   ],

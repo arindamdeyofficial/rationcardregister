@@ -41,6 +41,7 @@ import {DomSanitizer} from '@angular/platform-browser';
 import {MatIconRegistry} from '@angular/material/icon';
 import {MediaMatcher} from '@angular/cdk/layout';
 import {map, startWith} from 'rxjs/operators';
+import { HofDetailsComponent } from '../hof-details/hof-details.component';
 
 @Component({
   selector: 'app-customer-search',
@@ -88,7 +89,6 @@ export class CustomerSearchComponent implements OnInit {
   //list autocomplete start
   hofCtrl = new FormControl();
   filteredHofs: Observable<Hof[]>;
-  selectedHof: Hof;
   //list autocomplete end
 
   dataSource: MatTableDataSource<Customer>;
@@ -165,10 +165,24 @@ export class CustomerSearchComponent implements OnInit {
       );
   }
   //filter autocomplete list
-  private _filterHofs(value: string): Hof[] {
-    const filterValue = value.toLowerCase();
+  private _filterHofs(value: Hof): Hof[] {
+    const filterValue = value;
 
-    return this.hofs.filter(h => h.HofName.toLowerCase().indexOf(filterValue) === 0);
+    return this.hofs.filter(h => h == filterValue);
+  }
+  showHofDialog(hof: Hof){
+    const dialogRef = this.dialog.open(HofDetailsComponent, {
+      width: '250px',
+      data: { pageValue: hof}
+    });
+  }
+  hofSelected(hof: Hof, customerSerial: number){
+      console.log('hofName: ' + hof.HofName + 'customerSerial: ' + customerSerial);
+      var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
+      selecetedCust.SelectedHof = this.hofs.find(h => h == hof);
+  }
+  displayHofSelect(hof: Hof){
+      return 'FamilyId: ' + hof.FamilyId + ' HofId: ' + hof.HofId + ' Name: ' + hof.HofName;
   }
 
   ngOnInit() {    
@@ -208,6 +222,7 @@ export class CustomerSearchComponent implements OnInit {
         this.cardCats = data.CardCategories;
         this.relations = data.Relations;
         this.hofs = data.Hofs;
+        this.customers.forEach(a =>{ a.SelectedHof = this.hofs.find(h => h.HofId == a.HofId); console.log(a.SelectedHof.HofName);});
         this.dataSource = new MatTableDataSource(this.customers); 
         this.dataSource.sort = this.sort;
         this.dataSource.paginator = this.paginator;

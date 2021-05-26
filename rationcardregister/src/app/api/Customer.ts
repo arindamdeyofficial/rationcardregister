@@ -1,3 +1,5 @@
+import { Hof } from "./Hof";
+
 export class Customer {
     CustomerSerial: number;
     CustomerRowId: number;
@@ -13,6 +15,7 @@ export class Customer {
     IsHof: boolean | null;
     HofId: number | null;
     HofName: string;
+    SelectedHof: Hof;
     GaurdianName: string;
     GaurdianRelation: string;
     GaurdianRelId: number;

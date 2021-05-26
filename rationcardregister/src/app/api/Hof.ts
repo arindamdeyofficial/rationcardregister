@@ -1,4 +1,4 @@
-export interface Hof {
+export class Hof {
     HofId: number;
     HofName: string;
     HofMobileNumber: string;
