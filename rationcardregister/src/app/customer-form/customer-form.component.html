@@ -4,7 +4,7 @@
       <mat-card>
         <!-- <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" disabled
                 [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>  -->
-        <mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>Hofs</mat-label>
           <input matInput
                  aria-label="Hof"
@@ -64,13 +64,15 @@
           <mat-icon matSuffix svgIcon="contact"></mat-icon>
         </mat-form-field>
 
-        <mat-form-field>
+        <mat-form-field appearance="fill">
           <mat-label>CardCategory</mat-label>
           <input matInput
                  aria-label="CardCategory"
                  [matAutocomplete]="autoCardCategory"
                  [formControl]="cardCatCtrl"
                  [value]= "element.CardCategory"
+                 name="CardCategory" 
+                 placeholder="Ex. SPHH"
                  >
           <mat-icon matSuffix svgIcon="card"></mat-icon>
           <mat-autocomplete #autoCardCategory="matAutocomplete"
@@ -82,13 +84,8 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
+        <input type="hidden" [(ngModel)]="element.CardCategory" name="CardCategory" >
 
-
-        <mat-form-field appearance="fill">
-          <mat-label>CardCategory</mat-label>
-          <input matInput [(ngModel)]="element.CardCategory" name="CardCategory" placeholder="Ex. SPHH" >
-          <mat-icon matSuffix svgIcon="card"></mat-icon>
-        </mat-form-field>
         <mat-form-field>
           <mat-label>CardNumber</mat-label>
           <input matInput placeholder="Ex. SPHH-0051003419" [(ngModel)]="element.CardNumber" name="CardNumber">

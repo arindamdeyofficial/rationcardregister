@@ -160,7 +160,21 @@ export class CustomerFormComponent implements OnInit {
   }
 
   cardCatSelected(cat: CardCategory, customerSerial: number){
-      console.log('optionselected: ' + cat.CardCategoryDesc);
+    var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
+    selecetedCust.CardCategory = cat.CardCategoryDesc;
+    selecetedCust.CardCategoryId = cat.CardCategoryId;
+    selecetedCust.CardNumber = this.createCardnumber(cat.CardCategoryDesc, this.segregateCardNumber(selecetedCust.CardNumber)[1]);
+
+  }
+  createCardnumber(cat: string, num:string){
+    return cat + '-' + num;
+  }
+  segregateCardNumber(cardNumber: string){
+    let segArray: string[] = [];
+    var hyphenPosition: number = cardNumber.lastIndexOf('-');
+    var cat = cardNumber.substr(0, hyphenPosition);
+    var num = cardNumber.substr(hyphenPosition+1, cardNumber.length);    
+    return [cat, num, ...segArray];   
   }
   //filter autocomplete list
   private _filteredCardCategory(value: any): CardCategory[] {
