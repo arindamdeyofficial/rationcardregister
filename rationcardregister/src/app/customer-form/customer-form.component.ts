@@ -58,6 +58,9 @@ export class CustomerFormComponent implements OnInit {
   //list autocomplete start
   hofCtrl = new FormControl();
   filteredHofs: Observable<Hof[]>;
+
+ cardCatCtrl = new FormControl();
+  filteredCardCategory: Observable<CardCategory[]>;
   //list autocomplete end
   dialogData: DialogData;
 
@@ -110,15 +113,26 @@ export class CustomerFormComponent implements OnInit {
         startWith(''),
         map(val => val ? this._filterHofs(val) : this.hofs.slice())
       );
+      this.filteredCardCategory = this.cardCatCtrl.valueChanges
+      .pipe(
+        startWith(''),
+        map(val => val ? this._filteredCardCategory(val) : this.cardCats.slice())
+      );
   }
 
   ngOnInit(): void {
   }
   //filter autocomplete list
-  private _filterHofs(value: Hof): Hof[] {
-    const filterValue = value;
-
-    return this.hofs.filter(h => h == filterValue);
+  private _filterHofs(value: any): Hof[] {
+    var filterValue: any;
+    if(typeof(value) === 'string'){
+      filterValue = value.toLocaleLowerCase();
+    }
+    else
+    {
+      filterValue = value.HofName.toLocaleLowerCase();
+    }
+    return this.hofs.filter(h => h.HofName.toLocaleLowerCase().indexOf(filterValue) != -1);
   }
   showHofDialog(hof: Hof){
     const dialogRef = this.dialog.open(HofDetailsComponent, {
@@ -127,7 +141,6 @@ export class CustomerFormComponent implements OnInit {
     });
   }
   hofSelected(hof: Hof, customerSerial: number){
-      console.log('hofName: ' + hof.HofName + 'customerSerial: ' + customerSerial);
       var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
       selecetedCust.SelectedHof = this.hofs.find(h => h == hof);
       selecetedCust.HofId = selecetedCust.SelectedHof.HofId;
@@ -145,6 +158,30 @@ export class CustomerFormComponent implements OnInit {
       displayText = 'FamilyId: ' + hof.FamilyId + ' HofId: ' + hof.HofId + ' Name: ' + hof.HofName;
       return displayText;
   }
+
+  cardCatSelected(cat: CardCategory, customerSerial: number){
+      console.log('optionselected: ' + cat.CardCategoryDesc);
+  }
+  //filter autocomplete list
+  private _filteredCardCategory(value: any): CardCategory[] {
+    var filterValue: any;
+    if(typeof(value) === 'string'){
+      filterValue = value.toLocaleLowerCase();
+    }
+    else
+    {
+      filterValue = value.CardCategoryDesc.toLocaleLowerCase();
+    }
+    return this.cardCats.filter(h => h.CardCategoryDesc.toLocaleLowerCase().indexOf(filterValue) != -1);
+  }
+
+  displayCatSelect(cat: CardCategory){
+    console.log(cat.CardCategoryDesc);
+    let displayText = ""; 
+    displayText = cat.CardCategoryDesc;
+    return displayText;
+  }
+
   bindTableData(custoMersToBind: Customer[]){
       this.bindTableDataEvent.emit(custoMersToBind);
   }

@@ -50,19 +50,40 @@
           <small>{{element.SelectedHof.HofMobileNumber}}</small>                              
           <mat-icon matSuffix svgIcon="card"></mat-icon>
           <small>{{element.SelectedHof.HofCardNumber}}</small> 
-        </mat-card>
-                    
+        </mat-card>                    
         <mat-form-field [hidden]="true">
           <mat-label>HofName</mat-label>
           <input matInput placeholder="Ex. Head Of the family Name" [(ngModel)]="element.HofName" name="HofName">
           <mat-icon matSuffix svgIcon="hof"></mat-icon>
         </mat-form-field>
         <input type="hidden" [(ngModel)]="element.IsHof" name="IsHof">
+
         <mat-form-field>
           <mat-label>Name</mat-label>
           <input matInput placeholder="Ex. Customer Name" [(ngModel)]="element.Name" name="Name">
           <mat-icon matSuffix svgIcon="contact"></mat-icon>
         </mat-form-field>
+
+        <mat-form-field>
+          <mat-label>CardCategory</mat-label>
+          <input matInput
+                 aria-label="CardCategory"
+                 [matAutocomplete]="autoCardCategory"
+                 [formControl]="cardCatCtrl"
+                 [value]= "element.CardCategory"
+                 >
+          <mat-icon matSuffix svgIcon="card"></mat-icon>
+          <mat-autocomplete #autoCardCategory="matAutocomplete"
+          (optionSelected)='cardCatSelected($event.option.value, element.CustomerSerial)'
+          [displayWith]="displayCatSelect"
+          >
+            <mat-option *ngFor="let cat of filteredCardCategory | async" [value]="cat">
+                <small>{{cat.CardCategoryDesc}}</small>                                     
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+
         <mat-form-field appearance="fill">
           <mat-label>CardCategory</mat-label>
           <input matInput [(ngModel)]="element.CardCategory" name="CardCategory" placeholder="Ex. SPHH" >
