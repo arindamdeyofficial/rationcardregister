@@ -132,6 +132,13 @@ export class CustomerFormComponent implements OnInit {
       selecetedCust.SelectedHof = this.hofs.find(h => h == hof);
       selecetedCust.HofId = selecetedCust.SelectedHof.HofId;
       selecetedCust.HofName = selecetedCust.SelectedHof.HofName;
+      //change ishof
+      if(selecetedCust.CustomerSerial != selecetedCust.HofId){
+        selecetedCust.IsHof = false;
+      }
+      else{
+        selecetedCust.IsHof = true;
+      }
   }
   displayHofSelect(hof: Hof){
       let displayText = ""; 

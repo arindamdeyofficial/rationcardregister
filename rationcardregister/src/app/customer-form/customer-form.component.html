@@ -2,8 +2,8 @@
     <div class="row">     
       <div class="col-md-6 col-xs-6 col-lg-6">
       <mat-card>
-        <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" 
-                [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle> 
+        <!-- <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" disabled
+                [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>  -->
         <mat-form-field>
           <mat-label>Hofs</mat-label>
           <input matInput
@@ -57,6 +57,7 @@
           <input matInput placeholder="Ex. Head Of the family Name" [(ngModel)]="element.HofName" name="HofName">
           <mat-icon matSuffix svgIcon="hof"></mat-icon>
         </mat-form-field>
+        <input type="hidden" [(ngModel)]="element.IsHof" name="IsHof">
         <mat-form-field>
           <mat-label>Name</mat-label>
           <input matInput placeholder="Ex. Customer Name" [(ngModel)]="element.Name" name="Name">
@@ -114,7 +115,7 @@
         </mat-form-field>
         <mat-form-field appearance="fill">
           <mat-label>CreatedDate</mat-label>
-          <input matInput [matDatepicker]="pickerCreatedDate"
+          <input matInput [matDatepicker]="pickerCreatedDate" name="CreatedDate"
           [(ngModel)]="element.CreatedDate" placeholder="Ex. mm/dd/yyyy">
           <mat-datepicker-toggle matSuffix [for]="pickerCreatedDate"></mat-datepicker-toggle>
           <mat-datepicker #pickerCreatedDate></mat-datepicker>
