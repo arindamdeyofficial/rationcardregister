@@ -74,7 +74,7 @@
                  >
           <mat-icon matSuffix svgIcon="card"></mat-icon>
           <mat-autocomplete #autoCardCategory="matAutocomplete"
-          (optionSelected)='cardCatSelected($event.option.value, element.CustomerSerial)'
+          (optionSelected)='cardCatSelected($event.option.value, element.CustomerSerial)' 
           [displayWith]="displayCatSelect"
           >
             <mat-option *ngFor="let cat of filteredCardCategory | async" [value]="cat">
