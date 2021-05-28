@@ -65,6 +65,7 @@ import { NotificationComponent } from './notification/notification.component';
 import { LandingpageComponent } from './landingpage/landingpage.component';
 import { DialogComponent } from './dialog/dialog.component';
 import { HofDetailsComponent } from './hof-details/hof-details.component';
+import { CustomerFormComponent } from './customer-form/customer-form.component';
 
 
 @NgModule({
@@ -80,7 +81,8 @@ import { HofDetailsComponent } from './hof-details/hof-details.component';
     NotificationComponent,
     LandingpageComponent,
     DialogComponent,
-    HofDetailsComponent
+    HofDetailsComponent,
+    CustomerFormComponent
   ],
   imports: [
     BrowserModule,
