@@ -141,16 +141,47 @@ export class CustomerFormComponent implements OnInit {
     });
   }
   hofSelected(hof: Hof, customerSerial: number){
-      var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
-      selecetedCust.SelectedHof = this.hofs.find(h => h == hof);
-      selecetedCust.HofId = selecetedCust.SelectedHof.HofId;
-      selecetedCust.HofName = selecetedCust.SelectedHof.HofName;
-      //change ishof
-      if(selecetedCust.CustomerSerial != selecetedCust.HofId){
-        selecetedCust.IsHof = false;
+      var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);  
+      let isHofChangeAllowed = true;    
+      //check if family member exists then hof change not allowed
+      var noOfFamilyMembers = this.customers.filter(a => a.FamilyId == selecetedCust.FamilyId);
+      if((selecetedCust.IsHof) && (noOfFamilyMembers.length > 1)){
+        isHofChangeAllowed = false;
       }
-      else{
-        selecetedCust.IsHof = true;
+      
+      if(isHofChangeAllowed){
+        let selectedHof = this.hofs.find(h => h == hof);
+        //update hof information like active cards number or family member number
+        ++selectedHof.HofActiveCard;
+        let pastHof = this.hofs.find(h => h == selecetedCust.SelectedHof);
+        --pastHof.HofActiveCard;
+        //if only one selfHof and no familymembers then hof list needs to updated
+        if((selecetedCust.IsHof) && (noOfFamilyMembers.length == 1)){
+          this.hofs.splice(this.hofs.indexOf(pastHof), 1)
+        }
+
+        selecetedCust.SelectedHof = selectedHof; 
+
+        selecetedCust.HofId = selecetedCust.SelectedHof.HofId;
+        selecetedCust.HofName = selecetedCust.SelectedHof.HofName;
+        //change familyId
+        selecetedCust.FamilyId = hof.FamilyId;        
+          
+        //change ishof
+        if(selecetedCust.CustomerSerial != selecetedCust.HofId){
+          selecetedCust.IsHof = false;
+        }
+        else{
+          selecetedCust.IsHof = true;
+        }
+      }
+      else
+      {
+        console.log('not allowed');
+          this.hofCtrl.setValue(selecetedCust.SelectedHof);
+          //not allowed changing hof
+          this.openInfoDialog('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.',
+          'Delete Not Allowed!');
       }
   }
   displayHofSelect(hof: Hof){
@@ -163,7 +194,9 @@ export class CustomerFormComponent implements OnInit {
     var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
     selecetedCust.CardCategory = cat.CardCategoryDesc;
     selecetedCust.CardCategoryId = cat.CardCategoryId;
-    selecetedCust.CardNumber = this.createCardnumber(cat.CardCategoryDesc, this.segregateCardNumber(selecetedCust.CardNumber)[1]);
+    let cardNumberOnly = this.segregateCardNumber(selecetedCust.CardNumber)[1];
+    selecetedCust.CardNumber = this.createCardnumber(cat.CardCategoryDesc, cardNumberOnly);
+    //isHof HofCardNumber needs to be updated
 
   }
   createCardnumber(cat: string, num:string){
@@ -195,7 +228,16 @@ export class CustomerFormComponent implements OnInit {
     displayText = cat.CardCategoryDesc;
     return displayText;
   }
-
+  openInfoDialog(info: string, header:string){
+    this.dialogData = new DialogData();
+    this.dialogData.Header = header;
+    this.dialogData.Body = info;
+    this.dialogData.DType = 'ok';
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: { pageValue: this.dialogData}
+    });
+  }
   bindTableData(custoMersToBind: Customer[]){
       this.bindTableDataEvent.emit(custoMersToBind);
   }

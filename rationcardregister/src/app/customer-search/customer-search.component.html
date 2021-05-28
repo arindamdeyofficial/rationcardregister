@@ -61,7 +61,8 @@
                   <app-customer-form #customerRowForm
                   [customers]="customers" [hofs]="hofs" [cardCats]="cardCats"
                     [relations]="relations" [element] = "element"
-                    (bindTableDataEvent) = "bindTableDataEvent($event)"
+                    (bindTableDataEvent) = "bindTableData($event)"
+                    (openInfoDialogEvent) = "openInfoDialog($event)"
                   ></app-customer-form>
                   
                 </div>

@@ -18,6 +18,9 @@ export class DialogComponent implements OnInit {
 
   ngOnInit(): void {
   }
+  whoami(){
+    console.log('dgr');
+  }  
 }
 export class DialogData {
   Header: string;

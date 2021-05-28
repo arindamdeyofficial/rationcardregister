@@ -111,17 +111,7 @@ export class CustomerSearchComponent implements OnInit {
         this.deleteCustomer(cust);
       }      
     });
-  }
-  openInfoDialog(info: string, header:string) {
-    this.dialogData = new DialogData();
-    this.dialogData.Header = header;
-    this.dialogData.Body = info;
-    this.dialogData.DType = 'ok';
-    const dialogRef = this.dialog.open(DialogComponent, {
-      width: '250px',
-      data: { pageValue: this.dialogData}
-    });
-  }
+  }  
   getAllCustomers(){
     this.fetchCustomerDataService.GetMasterData()
       .subscribe(        
@@ -200,7 +190,16 @@ export class CustomerSearchComponent implements OnInit {
     console.log('after add || dataSource length: ' + this.dataSource.data.length.toString()
     + 'customer array length: ' + this.customers.length);
   }
-  
+  openInfoDialog(info: string, header:string) {
+    this.dialogData = new DialogData();
+    this.dialogData.Header = header;
+    this.dialogData.Body = info;
+    this.dialogData.DType = 'ok';
+    const dialogRef = this.dialog.open(DialogComponent, {
+      width: '250px',
+      data: { pageValue: this.dialogData}
+    });
+  }
   public doFilter = (value: string) => {
     this.dataSource.filter = value.trim().toLocaleLowerCase();
   }
