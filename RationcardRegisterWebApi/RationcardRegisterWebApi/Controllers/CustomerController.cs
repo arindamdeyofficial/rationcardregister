@@ -70,6 +70,18 @@ namespace RationcardRegisterWebApi.Controllers
                         RelationId = rel.MstRelId,
                         RelationDesc = rel.Relation
                     }).ToList();
+                //masterData.CategoryWiseCount = from cate in _newContext.MstCats.DefaultIfEmpty()
+                //                               group cate by cate.CatId into cat
+                //                               join cust in _newContext.MstCustomers
+                //                               on cat.CatId equals cust.CardCategoryId
+                                               
+                //                               select new CategoryWise
+                //                               {
+                //                                   CategoryDetails = new CardCategory
+                //                                   {
+                //                                       CardCategoryId = cat.
+                //                                   }
+                //                               }).ToList();
             }
             catch (Exception ex)
             {

@@ -16,5 +16,7 @@ namespace BusinessModel
         public List<Relation> Relations { get; set; }
         [JsonPropertyName("CardCategories")]
         public List<CardCategory> CardCategories { get; set; }
+        [JsonPropertyName("CategoryWiseCount")]
+        public List<CategoryWise> CategoryWiseCount{ get; set; }
     }
 }

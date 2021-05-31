@@ -1,7 +1,21 @@
 <br>
     <div class="row">
-      <mat-progress-bar mode="query" [hidden]="!dbCopyStatus"></mat-progress-bar>
+      <mat-progress-bar mode="query" [hidden]="dbCopyStatus != 'Started'"></mat-progress-bar>
     </div>
     <div class="row"> 
-<button mat-raised-button color="primary" (click)="CopyCustomersFromOldDb()">Migrate all customers and Rationcard Information from old database to new database</button>
-</div>
+        <button mat-raised-button color="primary" (click)="CopyCustomersFromOldDb($event.target)"
+        [disabled] = "dbCopyStatus == 'Started'"
+        >
+          Migrate all customers and Rationcard Information from old database to new database
+        </button>
+        <button mat-raised-button>
+          <div>Total {{ customerCountOld }} Customers in Old Database</div>
+          <div>Total {{ customerCountNew }} Customers in New Database</div>
+        </button>
+        <button mat-raised-button 
+        [color]="dbCopyStatus == 'Success' ? 'primary' : (dbCopyStatus == 'Failed' ? 'warn' : 'accent')"      
+      >{{ dbCopyStatus }}</button>
+      <button mat-raised-button [hidden]="dbCopyStatus == 'Started'"
+      (click)="DownloadCustomerData()"
+      >Download Customer Excel</button>
+    </div>

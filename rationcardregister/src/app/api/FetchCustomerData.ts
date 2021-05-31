@@ -6,6 +6,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpResponse, HttpClientModule, HttpHeaders, HttpParams } from '@angular/common/http';
 import { MasterData } from './MasterData';
 import { Customer } from './Customer';
+import { MigrateResponse } from './MigrateResponse';
 
 @Injectable()
 export class FetchCustomerData {
@@ -20,7 +21,7 @@ export class FetchCustomerData {
   constructor(private http: HttpClient) { }
 
   CopyCustomersFromOldDb() {
-    return this.http.get<boolean>(this.baseUrl + '/Admin/CopyCustomersFromOldDb')
+    return this.http.get<MigrateResponse>(this.baseUrl + '/Admin/CopyCustomersFromOldDb')
       .pipe(
         retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error
@@ -49,6 +50,23 @@ export class FetchCustomerData {
   }
   AddOrEditCustomer(cust: Customer) {
     return this.http.post<Boolean>(this.baseUrl + '/Customer/AddOrEditCustomer', cust, this.httpOptions)
+      .pipe(
+        retry(3), // retry a failed request up to 3 times
+        catchError(this.handleError) // then handle the error
+      );
+  }
+  DownloadCustomerData() {
+    const httpOptionsDownload = {
+      responseType: 'blob' as 'json'
+    };
+    return this.http.get<File>(this.baseUrl + '/Admin/DownloadCustomerData', httpOptionsDownload)
+      .pipe(
+        retry(3), // retry a failed request up to 3 times
+        catchError(this.handleError) // then handle the error
+      );
+  }
+  GetCustomerCount() {
+    return this.http.get<number[]>(this.baseUrl + '/Admin/GetCustomerCount')
       .pipe(
         retry(3), // retry a failed request up to 3 times
         catchError(this.handleError) // then handle the error
