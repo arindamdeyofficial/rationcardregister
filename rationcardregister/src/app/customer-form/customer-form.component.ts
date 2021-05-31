@@ -18,7 +18,7 @@ import {
   OnDestroy,
   Optional,
   Self,
-  ViewChild, ViewChildren, QueryList, ChangeDetectorRef, OnInit, Output, EventEmitter 
+  ViewChild, ViewChildren, QueryList, ChangeDetectorRef, OnInit, Output, EventEmitter
 } from '@angular/core';
 import {
   AbstractControl,
@@ -54,7 +54,7 @@ export class CustomerFormComponent implements OnInit {
   @Input() relations: Array<Relation>;
   @Input() element: Customer;
   @Output() bindTableDataEvent = new EventEmitter();
-
+  
   //list autocomplete start
   hofCtrl = new FormControl();
   filteredHofs: Observable<Hof[]>;
@@ -104,7 +104,7 @@ export class CustomerFormComponent implements OnInit {
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/wc_black_24dp.svg'))
     .addSvgIcon(
       'address',
-      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/gite_black_24dp.svg'))
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/gite_black_24dp.svg'))     
       ;
 
       //list autocomplete
@@ -189,6 +189,19 @@ export class CustomerFormComponent implements OnInit {
       displayText = 'FamilyId: ' + hof.FamilyId + ' HofId: ' + hof.HofId + ' Name: ' + hof.HofName;
       return displayText;
   }
+  // checkHofMembers(event: any, custSerial: number){ 
+  //   var selectedCust = this.customers.find(c => c.CustomerSerial == custSerial);
+  //   var noOfFamilyMembers = this.customers.filter(a => a.FamilyId == selectedCust.FamilyId);
+  //   if(noOfFamilyMembers.length > 1)
+  //   {
+  //     console.log(selectedCust.IsHof);
+  //     //due to an ui bug setting false is acting as true
+  //     selectedCust.IsHof = false;
+  //     console.log(selectedCust.IsHof);
+  //     this.openInfoDialog('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.',
+  //         'Delete Not Allowed!');
+  //   }
+  // }
 
   cardCatSelected(cat: CardCategory, customerSerial: number){
     var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);

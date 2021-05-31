@@ -2,8 +2,10 @@
     <div class="row">     
       <div class="col-md-6 col-xs-6 col-lg-6">
       <mat-card>
-        <!-- <mat-slide-toggle [checked]="element.IsHof" name="IsHof" color="primary" disabled
-                [(ngModel)]="element.IsHof">Head Of the Family</mat-slide-toggle>  -->
+        <mat-slide-toggle  name="IsHof" color="primary"
+                [(ngModel)]="element.IsHof" disabled                
+                >Head Of the Family</mat-slide-toggle> 
+                <!-- (click)="checkHofMembers($event, element.CustomerSerial)" -->
         <mat-form-field appearance="fill">
           <mat-label>Hofs</mat-label>
           <input matInput
@@ -56,8 +58,6 @@
           <input matInput placeholder="Ex. Head Of the family Name" [(ngModel)]="element.HofName" name="HofName">
           <mat-icon matSuffix svgIcon="hof"></mat-icon>
         </mat-form-field>
-        <input type="hidden" [(ngModel)]="element.IsHof" name="IsHof">
-
         <mat-form-field>
           <mat-label>Name</mat-label>
           <input matInput placeholder="Ex. Customer Name" [(ngModel)]="element.Name" name="Name">
@@ -84,8 +84,6 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-        <input type="hidden" [(ngModel)]="element.CardCategory" name="CardCategory" >
-
         <mat-form-field>
           <mat-label>CardNumber</mat-label>
           <input matInput placeholder="Ex. SPHH-0051003419" [(ngModel)]="element.CardNumber" name="CardNumber">
@@ -149,35 +147,16 @@
       </mat-card>
       </div>
       <div class="col-md-3 col-xs-3 col-lg-3">
-      <mat-card>                        
-        <mat-form-field>
-          <mat-label>CustomerSerial</mat-label>
-          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerSerial" name="CustomerSerial">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>CustomerRowId</mat-label>
-          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.CustomerRowId" name="CustomerRowId">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>FamilyId</mat-label>
-          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.FamilyId" name="FamilyId">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>RelationWithHofId</mat-label>
-          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.RelationWithHofId" name="RelationWithHofId">
-        </mat-form-field>
-        <mat-form-field>
-          <mat-label>HofId</mat-label>
-          <input matInput placeholder="Automatic From BackEnd" [(ngModel)]="element.HofId" name="HofId">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>GaurdianRelId</mat-label>
-          <input matInput [(ngModel)]="element.GaurdianRelId" name="GaurdianRelId" placeholder="Automatic From BackEnd">
-        </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>CardCategoryId</mat-label>
-          <input matInput [(ngModel)]="element.CardCategoryId" name="CardCategoryId" placeholder="Automatic From BackEnd">
-        </mat-form-field>
+      <mat-card>   
+        <input type="hidden" [(ngModel)]="element.IsHof" name="IsHof" >
+        <input type="hidden" [(ngModel)]="element.CardCategory" name="CardCategory" >
+        <input type="hidden" [(ngModel)]="element.CustomerSerial" name="CustomerSerial"> 
+        <input type="hidden" [(ngModel)]="element.CustomerRowId" name="CustomerRowId">
+        <input type="hidden" [(ngModel)]="element.FamilyId" name="FamilyId">
+        <input type="hidden" [(ngModel)]="element.RelationWithHofId" name="RelationWithHofId">
+        <input type="hidden" [(ngModel)]="element.HofId" name="HofId">
+        <input type="hidden" [(ngModel)]="element.GaurdianRelId" name="GaurdianRelId">
+        <input type="hidden" [(ngModel)]="element.CardCategoryId" name="CardCategoryId">
       </mat-card>
       </div>
     </div>

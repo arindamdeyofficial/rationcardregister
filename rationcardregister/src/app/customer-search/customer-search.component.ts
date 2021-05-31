@@ -90,7 +90,11 @@ export class CustomerSearchComponent implements OnInit {
     media: MediaMatcher
     , iconRegistry: MatIconRegistry, sanitizer: DomSanitizer
   ) { 
-    
+    iconRegistry
+    .addSvgIcon(
+      'search',
+      sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/search_black_24dp.svg'))
+    ;
   }
   
 
@@ -185,8 +189,7 @@ export class CustomerSearchComponent implements OnInit {
     console.log('add new customer || dataSource length: ' + this.dataSource.data.length.toString()
     + 'customer array length: ' + this.customers.length);
     this.newCustomer = new Customer();
-    //this.newCustomer = this.customers[1];
-    this.dataSource = new MatTableDataSource([this.newCustomer, ...this.customers]);
+    this.bindTableData([this.newCustomer, ...this.customers]);
     console.log('after add || dataSource length: ' + this.dataSource.data.length.toString()
     + 'customer array length: ' + this.customers.length);
   }
