@@ -8,10 +8,6 @@ namespace Repository.NewModels
 {
     public partial class RationcardRegisterContext : DbContext
     {
-        public RationcardRegisterContext()
-        {
-        }
-
         public RationcardRegisterContext(DbContextOptions<RationcardRegisterContext> options)
             : base(options)
         {
@@ -25,14 +21,14 @@ namespace Repository.NewModels
         public virtual DbSet<MstRel> MstRels { get; set; }
         public virtual DbSet<MstRole> MstRoles { get; set; }
 
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        {
-            if (!optionsBuilder.IsConfigured)
-            {
-#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("Server=ARINDAMGONOKJAN\\SQL2019;Database=RationcardRegister;User Id=sa;Password=Nakshal!01051987;");
-            }
-        }
+//        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+//        {
+//            if (!optionsBuilder.IsConfigured)
+//            {
+//#warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
+//                //optionsBuilder.UseSqlServer("Server=ARINDAMGONOKJAN\\SQL2019;Database=RationcardRegister;User Id=sa;Password=Nakshal!01051987;");
+//            }
+//        }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

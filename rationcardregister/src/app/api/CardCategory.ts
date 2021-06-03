@@ -1,4 +1,4 @@
-export interface CardCategory {
+export class CardCategory {
     CardCategoryId: number;
     CardCategoryDesc: string;
     }

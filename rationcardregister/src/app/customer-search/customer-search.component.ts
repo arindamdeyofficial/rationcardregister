@@ -75,13 +75,10 @@ export class CustomerSearchComponent implements OnInit {
   "IsHof",
   "Active",
   'Action'];  
-  customers: Array<Customer>;
-  hofs: Array<Hof>;
-  cardCats: Array<CardCategory>;
-  relations: Array<Relation>;
   error: any;
   dialogData: DialogData;
   newCustomer: Customer;  
+  masterData: MasterData = new MasterData();
 
   constructor(
     private cd: ChangeDetectorRef,
@@ -120,16 +117,16 @@ export class CustomerSearchComponent implements OnInit {
     this.fetchCustomerDataService.GetMasterData()
       .subscribe(        
         (data: MasterData) => {
-            this.customers = data.Customers;
+            this.masterData.Customers = data.Customers;
             console.log('successfully all customer data fetched.');
-            this.cardCats = data.CardCategories;
-            this.relations = data.Relations;
-            this.hofs = data.Hofs;
-            this.customers.forEach(a =>{ 
-              a.SelectedHof = this.hofs.find(h => h.HofId == a.HofId); 
-            
+            this.masterData.CardCategories = data.CardCategories;
+            this.masterData.Relations = data.Relations;
+            this.masterData.Hofs = data.Hofs;
+            this.masterData.Customers.forEach(a =>{ 
+              a.SelectedHof = this.masterData.Hofs.find(h => h.HofId == a.HofId);             
             });
-            this.bindTableData(this.customers);
+            this.masterData.CategoryWiseCount = data.CategoryWiseCount;
+            this.bindTableData(this.masterData.Customers);
         }, (err) => {
           console.log('-----> err', err);
         });
@@ -143,12 +140,12 @@ export class CustomerSearchComponent implements OnInit {
 
   deleteCustomer(cust: Customer){
     if((cust != undefined) && (cust.CustomerSerial == undefined)){
-      this.dataSource = new MatTableDataSource(this.customers);
+      this.dataSource = new MatTableDataSource(this.masterData.Customers);
     }
     else{
       let todelete: Boolean;
       if(cust.IsHof){
-        var noOfFamilyMembers = this.customers.filter(a => a.FamilyId == cust.FamilyId);
+        var noOfFamilyMembers = this.masterData.Customers.filter(a => a.FamilyId == cust.FamilyId);
         console.log(cust.CardNumber + ' : ' + cust.Name + ' : HOF : noOfFamilyMembers: ' + noOfFamilyMembers.length);
         if(noOfFamilyMembers.length > 1){
           todelete = false;
@@ -168,12 +165,12 @@ export class CustomerSearchComponent implements OnInit {
             //if deleted successfully
             if(data){
               console.log(cust.CardNumber + ' : ' + cust.Name + ' : delete successful');
-              var custIndex = this.customers.findIndex(a => a == cust);
+              var custIndex = this.masterData.Customers.findIndex(a => a == cust);
               if (custIndex > -1) {
-                this.customers.splice(custIndex, 1);
+                this.masterData.Customers.splice(custIndex, 1);
               }
             //this.dataSource.data.splice(custIndex, 1);
-            this.bindTableData(this.customers);
+            this.bindTableData(this.masterData.Customers);
             }          
           }, (err) => {
             console.log('-----> err', err);
@@ -187,11 +184,11 @@ export class CustomerSearchComponent implements OnInit {
   }
   addNewCustomer(){
     console.log('add new customer || dataSource length: ' + this.dataSource.data.length.toString()
-    + 'customer array length: ' + this.customers.length);
+    + 'customer array length: ' + this.masterData.Customers.length);
     this.newCustomer = new Customer();
-    this.bindTableData([this.newCustomer, ...this.customers]);
+    this.bindTableData([this.newCustomer, ...this.masterData.Customers]);
     console.log('after add || dataSource length: ' + this.dataSource.data.length.toString()
-    + 'customer array length: ' + this.customers.length);
+    + 'customer array length: ' + this.masterData.Customers.length);
   }
   openInfoDialog(info: string, header:string) {
     this.dialogData = new DialogData();
@@ -211,7 +208,7 @@ export class CustomerSearchComponent implements OnInit {
     this.cd.detectChanges();
   }
   clear() {
-    this.customers = undefined;
+    this.masterData.Customers = undefined;
     this.error = undefined;
   }
   

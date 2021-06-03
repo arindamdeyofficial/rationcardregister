@@ -48,10 +48,7 @@ import { HofDetailsComponent } from '../hof-details/hof-details.component';
   styleUrls: ['./customer-form.component.css']
 })
 export class CustomerFormComponent implements OnInit {
-  @Input() customers: Array<Customer>;
-  @Input() hofs: Array<Hof>;
-  @Input() cardCats: Array<CardCategory>;
-  @Input() relations: Array<Relation>;
+  @Input() masterData: MasterData;
   @Input() element: Customer;
   @Output() bindTableDataEvent = new EventEmitter();
   
@@ -106,21 +103,21 @@ export class CustomerFormComponent implements OnInit {
       'address',
       sanitizer.bypassSecurityTrustResourceUrl('assets/img/menu/gite_black_24dp.svg'))     
       ;
-
+            
       //list autocomplete
       this.filteredHofs = this.hofCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(val => val ? this._filterHofs(val) : this.hofs.slice())
+        map(val => val ? this._filterHofs(val) : this.masterData.Hofs.slice())
       );
       this.filteredCardCategory = this.cardCatCtrl.valueChanges
       .pipe(
         startWith(''),
-        map(val => val ? this._filteredCardCategory(val) : this.cardCats.slice())
+        map(val => val ? this._filteredCardCategory(val) : this.masterData.CardCategories.slice())
       );
   }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
   }
   //filter autocomplete list
   private _filterHofs(value: any): Hof[] {
@@ -132,7 +129,7 @@ export class CustomerFormComponent implements OnInit {
     {
       filterValue = value.HofName.toLocaleLowerCase();
     }
-    return this.hofs.filter(h => h.HofName.toLocaleLowerCase().indexOf(filterValue) != -1);
+    return this.masterData.Hofs.filter(h => h.HofName.toLocaleLowerCase().indexOf(filterValue) != -1);
   }
   showHofDialog(hof: Hof){
     const dialogRef = this.dialog.open(HofDetailsComponent, {
@@ -141,23 +138,23 @@ export class CustomerFormComponent implements OnInit {
     });
   }
   hofSelected(hof: Hof, customerSerial: number){
-      var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);  
+      var selecetedCust = this.masterData.Customers.find(c => c.CustomerSerial == customerSerial);  
       let isHofChangeAllowed = true;    
       //check if family member exists then hof change not allowed
-      var noOfFamilyMembers = this.customers.filter(a => a.FamilyId == selecetedCust.FamilyId);
+      var noOfFamilyMembers = this.masterData.Customers.filter(a => a.FamilyId == selecetedCust.FamilyId);
       if((selecetedCust.IsHof) && (noOfFamilyMembers.length > 1)){
         isHofChangeAllowed = false;
       }
       
       if(isHofChangeAllowed){
-        let selectedHof = this.hofs.find(h => h == hof);
+        let selectedHof = this.masterData.Hofs.find(h => h == hof);
         //update hof information like active cards number or family member number
         ++selectedHof.HofActiveCard;
-        let pastHof = this.hofs.find(h => h == selecetedCust.SelectedHof);
+        let pastHof = this.masterData.Hofs.find(h => h == selecetedCust.SelectedHof);
         --pastHof.HofActiveCard;
         //if only one selfHof and no familymembers then hof list needs to updated
         if((selecetedCust.IsHof) && (noOfFamilyMembers.length == 1)){
-          this.hofs.splice(this.hofs.indexOf(pastHof), 1)
+          this.masterData.Hofs.splice(this.masterData.Hofs.indexOf(pastHof), 1)
         }
 
         selecetedCust.SelectedHof = selectedHof; 
@@ -177,7 +174,6 @@ export class CustomerFormComponent implements OnInit {
       }
       else
       {
-        console.log('not allowed');
           this.hofCtrl.setValue(selecetedCust.SelectedHof);
           //not allowed changing hof
           this.openInfoDialog('There are other memebers in this family under this Head of the family. Please delete them or assign another head of the family.',
@@ -204,7 +200,7 @@ export class CustomerFormComponent implements OnInit {
   // }
 
   cardCatSelected(cat: CardCategory, customerSerial: number){
-    var selecetedCust = this.customers.find(c => c.CustomerSerial == customerSerial);
+    var selecetedCust = this.masterData.Customers.find(c => c.CustomerSerial == customerSerial);
     selecetedCust.CardCategory = cat.CardCategoryDesc;
     selecetedCust.CardCategoryId = cat.CardCategoryId;
     let cardNumberOnly = this.segregateCardNumber(selecetedCust.CardNumber)[1];
@@ -232,11 +228,10 @@ export class CustomerFormComponent implements OnInit {
     {
       filterValue = value.CardCategoryDesc.toLocaleLowerCase();
     }
-    return this.cardCats.filter(h => h.CardCategoryDesc.toLocaleLowerCase().indexOf(filterValue) != -1);
+    return this.masterData.CardCategories.filter(h => h.CardCategoryDesc.toLocaleLowerCase().indexOf(filterValue) != -1);
   }
 
   displayCatSelect(cat: CardCategory){
-    console.log(cat.CardCategoryDesc);
     let displayText = ""; 
     displayText = cat.CardCategoryDesc;
     return displayText;
@@ -255,22 +250,21 @@ export class CustomerFormComponent implements OnInit {
       this.bindTableDataEvent.emit(custoMersToBind);
   }
   addOrEditCustomer(cust: Customer){
-    console.log(cust);
     var isNewRecord = cust.CustomerRowId == undefined;
     if(isNewRecord){
-      var relG = this.relations.find(r => r.RelationDesc == cust.GaurdianRelation);
+      var relG = this.masterData.Relations.find(r => r.RelationDesc == cust.GaurdianRelation);
       if(relG != undefined){
         cust.GaurdianRelId = relG.RelationId;
       }
-      var relH = this.relations.find(r => r.RelationDesc == cust.RelationWithHof);
+      var relH = this.masterData.Relations.find(r => r.RelationDesc == cust.RelationWithHof);
       if(relH != undefined){
         cust.RelationWithHofId = relH.RelationId;
       }
-      var hof = this.hofs.find(r => r.HofName == cust.HofName);
+      var hof = this.masterData.Hofs.find(r => r.HofName == cust.HofName);
       if(hof != undefined){
         cust.HofId = hof.HofId;
       }
-      var cat = this.cardCats.find(r => r.CardCategoryDesc == cust.CardCategory);
+      var cat = this.masterData.CardCategories.find(r => r.CardCategoryDesc == cust.CardCategory);
       if(cat != undefined){
         cust.CardCategoryId = cat.CardCategoryId;
       }
@@ -288,10 +282,9 @@ export class CustomerFormComponent implements OnInit {
         this.fetchCustomerDataService.AddOrEditCustomer(cust)
       .subscribe(        
         (data: boolean) => {
-            console.log(data);
             if(data && isNewRecord){
-              this.customers = [cust, ...this.customers];
-              this.bindTableData(this.customers);
+              this.masterData.Customers = [cust, ...this.masterData.Customers];
+              this.bindTableData(this.masterData.Customers);
           }
         }, (err) => {
           console.log('-----> err', err);

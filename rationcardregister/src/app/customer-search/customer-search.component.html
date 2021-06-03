@@ -1,9 +1,9 @@
 <br>
-<div class="row" [hidden]="customers != undefined">
+<div class="row" [hidden]="masterData.Customers != undefined">
   <span>Fetching Customers...</span>
   <mat-progress-bar mode="query"></mat-progress-bar>
 </div>
-<div class="row" [hidden]="customers == undefined"> 
+<div class="row" [hidden]="masterData.Customers == undefined"> 
   <div (click)="addNewCustomer()">
     <mat-icon svgIcon="add"></mat-icon>
     <button mat-raised-button color="accent">
@@ -63,8 +63,7 @@
                 <div class="inner-table mat-elevation-z8" *ngIf="expandedElement">
                   
                   <app-customer-form #customerRowForm
-                  [customers]="customers" [hofs]="hofs" [cardCats]="cardCats"
-                    [relations]="relations" [element] = "element"
+                  [masterData]="masterData" [element] = "element"
                     (bindTableDataEvent) = "bindTableData($event)"
                     (openInfoDialogEvent) = "openInfoDialog($event)"
                   ></app-customer-form>

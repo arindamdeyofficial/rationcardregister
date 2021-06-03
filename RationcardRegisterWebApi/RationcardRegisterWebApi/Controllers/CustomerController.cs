@@ -70,18 +70,17 @@ namespace RationcardRegisterWebApi.Controllers
                         RelationId = rel.MstRelId,
                         RelationDesc = rel.Relation
                     }).ToList();
-                //masterData.CategoryWiseCount = from cate in _newContext.MstCats.DefaultIfEmpty()
-                //                               group cate by cate.CatId into cat
-                //                               join cust in _newContext.MstCustomers
-                //                               on cat.CatId equals cust.CardCategoryId
-                                               
-                //                               select new CategoryWise
-                //                               {
-                //                                   CategoryDetails = new CardCategory
-                //                                   {
-                //                                       CardCategoryId = cat.
-                //                                   }
-                //                               }).ToList();
+                masterData.CategoryWiseCount = (from cat in _newContext.MstCats
+                                               select new CategoryWise
+                                               {
+                                                   CategoryDetails = new CardCategory
+                                                   {
+                                                       CardCategoryId = cat.CatId,
+                                                       CardCategoryDesc = cat.CatDesc
+                                                   },
+                                                   CardCountActive = _newContext.MstCustomers.Where(c => c.CardCategoryId.Equals(cat.CatId) && (c.Active??false)).Count(),
+                                                   CardCountTotal = _newContext.MstCustomers.Where(c => c.CardCategoryId.Equals(cat.CatId)).Count()
+                                               }).ToList();
             }
             catch (Exception ex)
             {
