@@ -24,7 +24,7 @@ import {
   AbstractControl,
   ControlValueAccessor,
   FormBuilder,
-  FormControl,
+  UntypedFormControl,
   FormGroup,
   NgControl,
   Validators,
@@ -53,10 +53,10 @@ export class CustomerFormComponent implements OnInit {
   @Output() bindTableDataEvent = new EventEmitter();
   
   //list autocomplete start
-  hofCtrl = new FormControl();
+  hofCtrl = new UntypedFormControl();
   filteredHofs: Observable<Hof[]>;
 
- cardCatCtrl = new FormControl();
+ cardCatCtrl = new UntypedFormControl();
   filteredCardCategory: Observable<CardCategory[]>;
   //list autocomplete end
   dialogData: DialogData;
@@ -303,9 +303,9 @@ export class CustomerFormComponent implements OnInit {
   }
 //validation start
 
-phNo = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
-dt = new FormControl('', [Validators.required, Validators.pattern(/^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/)]);
-agev = new FormControl('', [Validators.required, Validators.pattern(/^[0-9]{1,3}$/)]);
+phNo = new UntypedFormControl('', [Validators.required, Validators.pattern(/^[0-9]{10}$/)]);
+dt = new UntypedFormControl('', [Validators.required, Validators.pattern(/^([1-9]|0[1-9]|1[0-2])\/([1-9]|0[1-9]|1\d|2\d|3[01])\/(19|20)\d{2}$/)]);
+agev = new UntypedFormControl('', [Validators.required, Validators.pattern(/^[0-9]{1,3}$/)]);
 
 getPhErrMsg() {
   if (this.phNo.hasError('required')) {
