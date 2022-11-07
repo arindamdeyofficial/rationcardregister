@@ -10,7 +10,7 @@ import { MigrateResponse } from './MigrateResponse';
 
 @Injectable()
 export class FetchCustomerData {
-    baseUrl = 'https://localhost:5001';
+    baseUrl = 'https://localhost:44330';
     httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/json'
